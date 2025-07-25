@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLab.Infrastructure.SqlS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLab.Domain", "CodeLab.Domain\CodeLab.Domain.csproj", "{A0B93F1E-24CC-4DB6-BDE7-582109428A2A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLab.Infrastructure.Jwt", "CodeLab.Infrastructure.Jwt\CodeLab.Infrastructure.Jwt.csproj", "{EEC22CEA-C30D-4215-A869-BFD7BB05FA08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLab.Infrastructure.Jwt.Contracts", "CodeLab.Infrastructure.Jwt.Contracts\CodeLab.Infrastructure.Jwt.Contracts.csproj", "{595A9568-5B56-45EC-8352-B14686CA97FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +36,14 @@ Global
 		{A0B93F1E-24CC-4DB6-BDE7-582109428A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0B93F1E-24CC-4DB6-BDE7-582109428A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0B93F1E-24CC-4DB6-BDE7-582109428A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEC22CEA-C30D-4215-A869-BFD7BB05FA08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEC22CEA-C30D-4215-A869-BFD7BB05FA08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEC22CEA-C30D-4215-A869-BFD7BB05FA08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEC22CEA-C30D-4215-A869-BFD7BB05FA08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{595A9568-5B56-45EC-8352-B14686CA97FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{595A9568-5B56-45EC-8352-B14686CA97FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{595A9568-5B56-45EC-8352-B14686CA97FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{595A9568-5B56-45EC-8352-B14686CA97FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

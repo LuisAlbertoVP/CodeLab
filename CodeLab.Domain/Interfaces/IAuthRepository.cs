@@ -1,8 +1,9 @@
 using System;
+using CodeLab.Domain.DTOs;
 
 namespace CodeLab.Domain.Interfaces;
 
 public interface IAuthRepository
 {
-    Task<bool> ValidarUsuario(string email, string clave);
+    Task<UsuarioAutenticadoDto> IniciarSesion(string email, string clave);
 }
