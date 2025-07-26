@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../CodeLab.Domain/CodeLab.Domain.csproj" />
-    <ProjectReference Include="../CodeLab.Infrastructure.Jwt.Contracts/CodeLab.Infrastructure.Jwt.Contracts.csproj" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="../CodeLab.Infrastructure.Logging.Contracts/CodeLab.Infrastructure.Logging.Contracts.csproj" />
   </ItemGroup>
 

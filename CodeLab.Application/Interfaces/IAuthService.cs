@@ -1,8 +1,8 @@
-using System;
+using CodeLab.Application.Results;
 
 namespace CodeLab.Application.Interfaces;
 
 public interface IAuthService
 {
-    Task<string> IniciarSesion(string email, string clave);
+    Task<CodeLabResultado<string>> IniciarSesion(string email, string clave);
 }

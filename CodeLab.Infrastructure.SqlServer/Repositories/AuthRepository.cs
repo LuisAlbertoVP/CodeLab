@@ -1,5 +1,6 @@
 using System.Data;
 using CodeLab.Domain.DTOs;
+using CodeLab.Domain.Exceptions;
 using CodeLab.Domain.Interfaces;
 using CodeLab.Infrastructure.SqlServer.Data;
 using Dapper;
@@ -26,7 +27,7 @@ public class AuthRepository(CodeLabContext context) : IAuthRepository
         var outputValue = parameters.Get<string>("@mensaje");
         if (!string.IsNullOrEmpty(outputValue))
         {
-            throw new Exception(outputValue);
+            throw new AuthException(outputValue);
         }
 
         return resultados.FirstOrDefault();

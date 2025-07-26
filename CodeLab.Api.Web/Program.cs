@@ -1,9 +1,14 @@
+using CodeLab.Api.Web.Middleware;
 using CodeLab.Application.AppServices;
 using CodeLab.Application.Interfaces;
 using CodeLab.Domain.Interfaces;
-using CodeLab.Infrastructure.Jwt.Contracts.DTOs;
 using CodeLab.Infrastructure.Jwt.Contracts.Interfaces;
+using CodeLab.Infrastructure.Jwt.Contracts.Settings;
 using CodeLab.Infrastructure.Jwt.Services;
+using CodeLab.Infrastructure.Logging.Configurations;
+using CodeLab.Infrastructure.Logging.Contracts.Interfaces;
+using CodeLab.Infrastructure.Logging.Contracts.Settings;
+using CodeLab.Infrastructure.Logging.Services;
 using CodeLab.Infrastructure.SqlServer.Data;
 using CodeLab.Infrastructure.SqlServer.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +21,12 @@ try
     builder.Services.AddDbContext<CodeLabContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("CodeLabDatabase")));
 
-    var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettingsDto>()!;
+    var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()!;
     builder.Services.AddSingleton(jwtSettings);
+
+    var serilogSettings = builder.Configuration.GetSection("SerilogSettings").Get<SerilogSettings>()!;
+    SerilogConfiguration.ConfigureLogger(serilogSettings);
+    builder.Services.AddSingleton<ICodeLabLogger, CodeLabLogger>();
 
     builder.Services.AddScoped<IAuthRepository, AuthRepository>();
     builder.Services.AddScoped<IAuthService, AuthService>();
@@ -55,6 +64,8 @@ try
     Console.WriteLine("Configuración de servicios completada.");
 
     var app = builder.Build();
+
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
 
     if (app.Environment.IsDevelopment())
     {

@@ -28,11 +28,11 @@ public class AuthController(IAuthService service) : ControllerBase
         var email = parts[0];
         var clave = parts[1];
 
-        var token = await service.IniciarSesion(email, clave);
-        if (string.IsNullOrEmpty(token))
+        var resultado = await service.IniciarSesion(email, clave);
+        if (!resultado.EsExito)
         {
-            return Unauthorized("Credenciales inválidas");
+            return Unauthorized(resultado.MensajeError);
         }
-        return Ok(token);
+        return Ok(resultado.Valor);
     }
 }

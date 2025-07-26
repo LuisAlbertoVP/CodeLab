@@ -1,13 +1,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using CodeLab.Infrastructure.Jwt.Contracts.DTOs;
 using CodeLab.Infrastructure.Jwt.Contracts.Interfaces;
+using CodeLab.Infrastructure.Jwt.Contracts.Settings;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CodeLab.Infrastructure.Jwt.Services;
 
-public class JwtService(JwtSettingsDto jwtSettings) : IJwtService
+public class JwtService(JwtSettings jwtSettings) : IJwtService
 {
     public string GenerateToken(int id, string email)
     {
