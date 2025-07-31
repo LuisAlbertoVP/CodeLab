@@ -33,6 +33,6 @@ public class AuthController(IAuthService service) : ControllerBase
         {
             return Unauthorized(resultado.MensajeError);
         }
-        return Ok(resultado.Valor);
+        return Ok(new { token = resultado.Valor });
     }
 }

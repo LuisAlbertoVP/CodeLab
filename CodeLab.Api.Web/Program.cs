@@ -59,6 +59,16 @@ try
         });
     });
 
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAngularApp", policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    });
+
     builder.Services.AddControllers();
 
     Console.WriteLine("Configuración de servicios completada.");
@@ -74,6 +84,7 @@ try
     }
 
     app.UseHttpsRedirection();
+    app.UseCors("AllowAngularApp");
     app.MapControllers();
     app.Run(); 
 }

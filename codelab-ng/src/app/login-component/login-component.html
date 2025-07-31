@@ -1,0 +1,20 @@
+<div class="container-login">
+  <form [formGroup]="form" (ngSubmit)="iniciarSesion()">
+    <h2>Iniciar sesi&oacute;n</h2>
+    <p>
+      <mat-form-field appearance="fill">
+        <mat-label>Correo</mat-label>
+        <input matInput formControlName="correo" />
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Clave</mat-label>
+        <input matInput formControlName="clave" />
+        <mat-icon matSuffix>visibility</mat-icon>
+      </mat-form-field>
+    </p>
+    <button matButton="filled" type="submit">Iniciar sesi&oacute;n</button>
+  </form>
+</div>
