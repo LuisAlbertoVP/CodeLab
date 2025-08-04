@@ -1,0 +1,1 @@
+public record LoginResultDTO(string Token, string RefreshToken, DateTime Expiration);

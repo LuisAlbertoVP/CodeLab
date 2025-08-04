@@ -1,12 +1,14 @@
 using System.Text;
-using CodeLab.Application.Interfaces;
+using CodeLab.Application.Identity.Commands.Autenticar;
+using CodeLab.Application.Shared.Common;
+using CodeLab.Application.Shared.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodeLab.Api.Web.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController(IAuthService service) : ControllerBase
+public class AuthController(IMediator mediator) : ControllerBase
 {
     [HttpGet("IniciarSesion")]
     public async Task<IActionResult> IniciarSesion()
@@ -25,14 +27,21 @@ public class AuthController(IAuthService service) : ControllerBase
         if (parts.Length != 2)
             return Unauthorized("Credenciales mal formateadas");
 
-        var email = parts[0];
-        var clave = parts[1];
-
-        var resultado = await service.IniciarSesion(email, clave);
+        var comando = new AutenticarCommand(parts[0], parts[1]);
+        var resultado = await mediator.Send<AutenticarCommand, CodeLabResultado<LoginResultDTO>>(comando);
         if (!resultado.EsExito)
         {
             return Unauthorized(resultado.MensajeError);
         }
-        return Ok(new { token = resultado.Valor });
+
+        Response.Cookies.Append("RefreshToken", resultado.Valor.RefreshToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = resultado.Valor.Expiration
+        });
+
+        return Ok(new { token = resultado.Valor.Token });
     }
 }

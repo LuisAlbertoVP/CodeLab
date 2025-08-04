@@ -1,6 +1,7 @@
 using CodeLab.Api.Web.Middleware;
-using CodeLab.Application.AppServices;
-using CodeLab.Application.Interfaces;
+using CodeLab.Application.Identity.Commands.Autenticar;
+using CodeLab.Application.Shared.Common;
+using CodeLab.Application.Shared.Results;
 using CodeLab.Domain.Interfaces;
 using CodeLab.Infrastructure.Jwt.Contracts.Interfaces;
 using CodeLab.Infrastructure.Jwt.Contracts.Settings;
@@ -29,7 +30,9 @@ try
     builder.Services.AddSingleton<ICodeLabLogger, CodeLabLogger>();
 
     builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-    builder.Services.AddScoped<IAuthService, AuthService>();
+
+    builder.Services.AddScoped<IMediator, Mediator>();
+    builder.Services.AddScoped<IRequestHandler<AutenticarCommand, CodeLabResultado<LoginResultDTO>>, AutenticarCommandHandler>();
 
     builder.Services.AddScoped<IJwtService, JwtService>();
 
@@ -65,7 +68,8 @@ try
         {
             policy.WithOrigins("http://localhost:4200")
                 .AllowAnyHeader()
-                .AllowAnyMethod();
+                .AllowAnyMethod()
+                .AllowCredentials();
         });
     });
 

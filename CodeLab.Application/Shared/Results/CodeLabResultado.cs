@@ -1,4 +1,4 @@
-namespace CodeLab.Application.Results;
+namespace CodeLab.Application.Shared.Results;
 
 public class CodeLabResultado<T>
 {

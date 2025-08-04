@@ -11,7 +11,7 @@ export class LoginService {
   
   iniciarSesion(correo: string, clave: string) {
     const headers = { Authorization: 'Basic ' + btoa(`${correo}:${clave}`) };
-    return this.http.get<{ token: string }>('/Auth/IniciarSesion', { headers })
+    return this.http.get<{ token: string }>('/Auth/IniciarSesion', { headers, withCredentials: true })
       .pipe(
         tap(respuesta => this.token = respuesta.token),
         map(response => response.token)
