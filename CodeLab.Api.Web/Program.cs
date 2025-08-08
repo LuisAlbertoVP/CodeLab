@@ -1,7 +1,5 @@
 using CodeLab.Api.Web.Middleware;
-using CodeLab.Application.Identity.Commands.Autenticar;
-using CodeLab.Application.Shared.Common;
-using CodeLab.Application.Shared.Results;
+using CodeLab.Application.Shared.Extensions;
 using CodeLab.Domain.Interfaces;
 using CodeLab.Infrastructure.Jwt.Contracts.Interfaces;
 using CodeLab.Infrastructure.Jwt.Contracts.Settings;
@@ -31,8 +29,7 @@ try
 
     builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
-    builder.Services.AddScoped<IMediator, Mediator>();
-    builder.Services.AddScoped<IRequestHandler<AutenticarCommand, CodeLabResultado<LoginResultDTO>>, AutenticarCommandHandler>();
+    builder.Services.AddApplicationServices();
 
     builder.Services.AddScoped<IJwtService, JwtService>();
 
