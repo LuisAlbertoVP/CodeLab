@@ -40,7 +40,7 @@ public class AuthController(IMediator mediator) : ControllerBase
             HttpOnly = true,
             Secure = true,
             SameSite = SameSiteMode.Strict,
-            Expires = resultado.Valor.Expiration
+            Expires = new DateTimeOffset(resultado.Valor.Expiration, TimeSpan.Zero)
         });
 
         return Ok(new { token = resultado.Valor.Token });
@@ -51,7 +51,7 @@ public class AuthController(IMediator mediator) : ControllerBase
     {
         var refreshToken = Request.Cookies["RefreshToken"];
         if (string.IsNullOrWhiteSpace(refreshToken))
-            return Unauthorized("No se encontró el Refresh Token");
+            return Unauthorized("Tu sesión ha expirado, por favor vuelve a iniciar sesión.");
 
         var comando = new RefrescarTokenCommand(refreshToken);
         var resultado = await mediator.Send<RefrescarTokenCommand, CodeLabResultado<LoginResultDTO>>(comando);
@@ -65,7 +65,7 @@ public class AuthController(IMediator mediator) : ControllerBase
             HttpOnly = true,
             Secure = true,
             SameSite = SameSiteMode.Strict,
-            Expires = resultado.Valor.Expiration
+            Expires = new DateTimeOffset(resultado.Valor.Expiration, TimeSpan.Zero)
         });
 
         return Ok(new { token = resultado.Valor.Token });
