@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLab.Infrastructure.Logg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLab.Infrastructure.Logging.Contracts", "CodeLab.Infrastructure.Logging.Contracts\CodeLab.Infrastructure.Logging.Contracts.csproj", "{16499AB2-630C-4C3B-ACF1-40236DE28921}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLab.Infrastructure.SqlServer.Contracts", "CodeLab.Infrastructure.SqlServer.Contracts\CodeLab.Infrastructure.SqlServer.Contracts.csproj", "{37BE4AF8-9B74-4995-A925-01EDF16D8F11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{16499AB2-630C-4C3B-ACF1-40236DE28921}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16499AB2-630C-4C3B-ACF1-40236DE28921}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16499AB2-630C-4C3B-ACF1-40236DE28921}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37BE4AF8-9B74-4995-A925-01EDF16D8F11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37BE4AF8-9B74-4995-A925-01EDF16D8F11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37BE4AF8-9B74-4995-A925-01EDF16D8F11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37BE4AF8-9B74-4995-A925-01EDF16D8F11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

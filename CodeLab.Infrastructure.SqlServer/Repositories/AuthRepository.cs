@@ -1,7 +1,7 @@
 using System.Data;
-using CodeLab.Domain.DTOs;
-using CodeLab.Domain.Exceptions;
-using CodeLab.Domain.Interfaces;
+using CodeLab.Infrastructure.SqlServer.Contracts.DTOs;
+using CodeLab.Infrastructure.SqlServer.Contracts.Exceptions;
+using CodeLab.Infrastructure.SqlServer.Contracts.Interfaces;
 using CodeLab.Infrastructure.SqlServer.Data;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +18,17 @@ public class AuthRepository(CodeLabContext context) : IAuthRepository
         parameters.Add("@clave", clave, DbType.String, ParameterDirection.Input);
         parameters.Add("@mensaje", dbType: DbType.String, direction: ParameterDirection.Output, size: 255);
 
-        var resultados = await connection.QueryAsync<UsuarioAutenticadoDto>(
+        var multi = await connection.QueryMultipleAsync(
             "dbo.QRY_IniciarSesion",
             parameters,
             commandType: CommandType.StoredProcedure
         );
+
+        var usuario = await multi.ReadFirstOrDefaultAsync<UsuarioAutenticadoDto>();
+        if (usuario != null)
+        {
+            usuario.Roles = (await multi.ReadAsync<string>()).ToList();
+        }
 
         var outputValue = parameters.Get<string>("@mensaje");
         if (!string.IsNullOrEmpty(outputValue))
@@ -30,6 +36,34 @@ public class AuthRepository(CodeLabContext context) : IAuthRepository
             throw new AuthException(outputValue);
         }
 
-        return resultados.FirstOrDefault();
+        return usuario;
+    }
+
+    public async Task<UsuarioAutenticadoDto> RefrescarToken(string token)
+    {
+        using var connection = context.Database.GetDbConnection();
+        var parameters = new DynamicParameters();
+        parameters.Add("@token", token, DbType.String, ParameterDirection.Input);
+        parameters.Add("@mensaje", dbType: DbType.String, direction: ParameterDirection.Output, size: 255);
+
+        var multi = await connection.QueryMultipleAsync(
+            "dbo.QRY_ValidarRefreshToken",
+            parameters,
+            commandType: CommandType.StoredProcedure
+        );
+
+        var usuario = await multi.ReadFirstOrDefaultAsync<UsuarioAutenticadoDto>();
+        if (usuario != null)
+        {
+            usuario.Roles = (await multi.ReadAsync<string>()).ToList();
+        }
+
+        var outputValue = parameters.Get<string>("@mensaje");
+        if (!string.IsNullOrEmpty(outputValue))
+        {
+            throw new AuthException(outputValue);
+        }
+
+        return usuario;
     }
 }

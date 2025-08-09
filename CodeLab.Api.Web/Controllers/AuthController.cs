@@ -1,5 +1,6 @@
 using System.Text;
 using CodeLab.Application.Identity.Commands.Autenticar;
+using CodeLab.Application.Identity.Commands.RefrescarToken;
 using CodeLab.Application.Shared.Common;
 using CodeLab.Application.Shared.Results;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,31 @@ public class AuthController(IMediator mediator) : ControllerBase
 
         var comando = new AutenticarCommand(parts[0], parts[1]);
         var resultado = await mediator.Send<AutenticarCommand, CodeLabResultado<LoginResultDTO>>(comando);
+        if (!resultado.EsExito)
+        {
+            return Unauthorized(resultado.MensajeError);
+        }
+
+        Response.Cookies.Append("RefreshToken", resultado.Valor.RefreshToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = resultado.Valor.Expiration
+        });
+
+        return Ok(new { token = resultado.Valor.Token });
+    }
+
+    [HttpPost("RefrescarToken")]
+    public async Task<IActionResult> RefrescarToken()
+    {
+        var refreshToken = Request.Cookies["RefreshToken"];
+        if (string.IsNullOrWhiteSpace(refreshToken))
+            return Unauthorized("No se encontró el Refresh Token");
+
+        var comando = new RefrescarTokenCommand(refreshToken);
+        var resultado = await mediator.Send<RefrescarTokenCommand, CodeLabResultado<LoginResultDTO>>(comando);
         if (!resultado.EsExito)
         {
             return Unauthorized(resultado.MensajeError);

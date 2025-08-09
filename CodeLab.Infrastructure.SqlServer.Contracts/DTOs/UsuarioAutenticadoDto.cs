@@ -1,6 +1,6 @@
 using System;
 
-namespace CodeLab.Domain.DTOs;
+namespace CodeLab.Infrastructure.SqlServer.Contracts.DTOs;
 
 public class UsuarioAutenticadoDto
 {
@@ -8,4 +8,5 @@ public class UsuarioAutenticadoDto
     public string Nombre { get; set; }
     public string RefreshToken { get; set; }
     public DateTime FechaExpiracion { get; set; }
+    public List<string> Roles { get; set; }
 }

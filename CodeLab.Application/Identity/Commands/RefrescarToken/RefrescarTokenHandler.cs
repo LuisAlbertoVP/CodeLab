@@ -5,21 +5,21 @@ using CodeLab.Infrastructure.Logging.Contracts.Interfaces;
 using CodeLab.Infrastructure.SqlServer.Contracts.Exceptions;
 using CodeLab.Infrastructure.SqlServer.Contracts.Interfaces;
 
-namespace CodeLab.Application.Identity.Commands.Autenticar;
+namespace CodeLab.Application.Identity.Commands.RefrescarToken;
 
-public class AutenticarCommandHandler(
+public class RefrescarTokenHandler(
     IAuthRepository authRepository,
     IJwtService jwtService,
     ICodeLabLogger logger
-) : IRequestHandler<AutenticarCommand, CodeLabResultado<LoginResultDTO>>
+) : IRequestHandler<RefrescarTokenCommand, CodeLabResultado<LoginResultDTO>>
 {
-    public async Task<CodeLabResultado<LoginResultDTO>> Handle(AutenticarCommand request, CancellationToken cancellationToken)
+    public async Task<CodeLabResultado<LoginResultDTO>> Handle(RefrescarTokenCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var usuarioAutenticado = await authRepository.IniciarSesion(request.Email, request.Clave);
+            var usuarioAutenticado = await authRepository.RefrescarToken(request.RefreshToken);
             var token = jwtService.GenerateToken(usuarioAutenticado.Id, usuarioAutenticado.Roles);
-            logger.LogInformation($"Usuario con ID '{usuarioAutenticado.Id}' autenticado correctamente.");
+            logger.LogInformation($"Refresh token exitoso para el usuario con ID '{usuarioAutenticado.Id}'.");
             var loginResult = new LoginResultDTO(
                 Token: token,
                 RefreshToken: usuarioAutenticado.RefreshToken,
@@ -29,7 +29,7 @@ public class AutenticarCommandHandler(
         }
         catch (AuthException ex)
         {
-            logger.LogWarning($"Error de autenticación: {ex.Message}");
+            logger.LogWarning($"Fallo al refrescar token: {ex.Message}");
             return CodeLabResultado<LoginResultDTO>.Error(ex.Message);
         }
     }
