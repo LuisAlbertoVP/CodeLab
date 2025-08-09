@@ -36,7 +36,7 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(c =>
     {
-        c.SwaggerDoc("v1", new() { Title = "Tu API", Version = "v1" });
+        c.SwaggerDoc("v1", new() { Title = "CodeLab", Version = "v1" });
 
         c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
         {

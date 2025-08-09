@@ -6,12 +6,14 @@ namespace CodeLab.Infrastructure.Logging.Configurations;
 public static class SerilogConfiguration
 {
     public static void ConfigureLogger(SerilogSettings settings)
-        {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .WriteTo.File(settings.Ruta,
-                    rollingInterval: RollingInterval.Day,
-                    rollOnFileSizeLimit: true)
-                .CreateLogger();
-        }
+    {
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .WriteTo.Async(x => x.File(
+                settings.Ruta,
+                rollingInterval: RollingInterval.Day,
+                rollOnFileSizeLimit: true
+            ))
+            .CreateLogger();
+    }
 }
