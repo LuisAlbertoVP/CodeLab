@@ -1,9 +1,10 @@
 using System.Text;
+using CodeLab.Infrastructure.RabbitMq.Contracts.Interfaces;
 using RabbitMQ.Client;
 
 namespace CodeLab.Infrastructure.RabbitMq.Services;
 
-public class MailPublisherService : IAsyncDisposable
+public class MailPublisherService : IMailPublisherService, IAsyncDisposable
 {
     private IConnection _connection;
     private IChannel _channel;

@@ -1,16 +1,17 @@
+using CodeLab.Infrastructure.RabbitMq.Contracts.Interfaces;
+
 namespace CodeLab.Service.Mail;
 
-public class Worker : BackgroundService
+public class Worker(IMailConsumerService mailConsumerService) : BackgroundService
 {
-    private readonly ILogger<Worker> _logger;
-
-    public Worker(ILogger<Worker> logger)
-    {
-        _logger = logger;
-    }
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        
+        await mailConsumerService.InitializeAsync();
+        await mailConsumerService.StartAsync(async message =>
+        {
+            Console.WriteLine($"Received message: {message}");
+            await Task.CompletedTask;
+        });
+        await Task.Delay(-1, cancellationToken: stoppingToken);
     }
 }

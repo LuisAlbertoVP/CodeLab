@@ -7,6 +7,8 @@ using CodeLab.Infrastructure.Logging.Configurations;
 using CodeLab.Infrastructure.Logging.Contracts.Interfaces;
 using CodeLab.Infrastructure.Logging.Contracts.Settings;
 using CodeLab.Infrastructure.Logging.Services;
+using CodeLab.Infrastructure.RabbitMq.Contracts.Interfaces;
+using CodeLab.Infrastructure.RabbitMq.Services;
 using CodeLab.Infrastructure.SqlServer.Contracts.Interfaces;
 using CodeLab.Infrastructure.SqlServer.Data;
 using CodeLab.Infrastructure.SqlServer.Repositories;
@@ -32,6 +34,8 @@ try
     builder.Services.AddApplicationServices();
 
     builder.Services.AddScoped<IJwtService, JwtService>();
+
+    builder.Services.AddSingleton<IMailPublisherService, MailPublisherService>();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(c =>
@@ -75,6 +79,9 @@ try
     Console.WriteLine("Configuración de servicios completada.");
 
     var app = builder.Build();
+
+    var mailService = app.Services.GetRequiredService<IMailPublisherService>();
+    await mailService.InitializeAsync();
 
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 

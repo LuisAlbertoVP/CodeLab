@@ -1,21 +1,27 @@
 using System.Text;
+using CodeLab.Infrastructure.RabbitMq.Contracts.Interfaces;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace CodeLab.Infrastructure.RabbitMq.Services;
 
-public class MailConsumerService
+public class MailConsumerService : IMailConsumerService, IAsyncDisposable
 {
-    public async Task StartAsync(Func<string, Task> task)
+    private IConnection _connection;
+    private IChannel _channel;
+
+    public async Task InitializeAsync()
     {
         var factory = new ConnectionFactory { HostName = "localhost" };
-        using var connection = await factory.CreateConnectionAsync();
-        using var channel = await connection.CreateChannelAsync();
-
-        await channel.QueueDeclareAsync(queue: "mail", durable: false, exclusive: false, autoDelete: false,
+        _connection = await factory.CreateConnectionAsync();
+        _channel = await _connection.CreateChannelAsync();
+        await _channel.QueueDeclareAsync(queue: "mail", durable: false, exclusive: false, autoDelete: false,
             arguments: null);
+    }
 
-        var consumer = new AsyncEventingBasicConsumer(channel);
+    public async Task StartAsync(Func<string, Task> task)
+    {
+        var consumer = new AsyncEventingBasicConsumer(_channel);
         consumer.ReceivedAsync += async (model, ea) =>
         {
             var body = ea.Body.ToArray();
@@ -23,6 +29,12 @@ public class MailConsumerService
             await task(message);
         };
 
-        await channel.BasicConsumeAsync("mail", autoAck: true, consumer: consumer);
+        await _channel.BasicConsumeAsync("mail", autoAck: true, consumer: consumer);
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        await _channel.CloseAsync();
+        await _connection.CloseAsync();
     }
 }
