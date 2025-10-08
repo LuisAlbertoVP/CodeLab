@@ -12,7 +12,11 @@ public class ExceptionBehavior<TInput, TOutput>(ICodeLabLogger logger) : IPipeli
     {
         try
         {
-            return await next();
+            return await next().WaitAsync(cancellationToken);
+        }
+        catch (CodeLabException)
+        {
+            throw;
         }
         catch (ValidationException ex)
         {
