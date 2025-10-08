@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../CodeLab.Domain/CodeLab.Domain.csproj" />
+    <ProjectReference Include="../CodeLab.Infrastructure.Excel.Contracts/CodeLab.Infrastructure.Excel.Contracts.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.Jwt.Contracts/CodeLab.Infrastructure.Jwt.Contracts.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.Logging.Contracts/CodeLab.Infrastructure.Logging.Contracts.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.RabbitMq.Contracts/CodeLab.Infrastructure.RabbitMq.Contracts.csproj" />

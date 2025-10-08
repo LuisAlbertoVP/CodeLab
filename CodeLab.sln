@@ -27,6 +27,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLab.Infrastructure.Rabb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLab.Infrastructure.RabbitMq.Contracts", "CodeLab.Infrastructure.RabbitMq.Contracts\CodeLab.Infrastructure.RabbitMq.Contracts.csproj", "{0FF44D82-05D2-46B3-9A6B-4C9F6439C545}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLab.Infrastructure.Excel.Contracts", "CodeLab.Infrastructure.Excel.Contracts\CodeLab.Infrastructure.Excel.Contracts.csproj", "{01A8889F-FDE8-4288-B5F2-851A0FDFB9FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLab.Infrastructure.Excel", "CodeLab.Infrastructure.Excel\CodeLab.Infrastructure.Excel.csproj", "{E303A5FD-11F2-48D7-AE01-ECD4CBF3E1D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLab.Testing", "CodeLab.Testing\CodeLab.Testing.csproj", "{F6046423-F605-4EBB-9503-82474500DB41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +87,18 @@ Global
 		{0FF44D82-05D2-46B3-9A6B-4C9F6439C545}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FF44D82-05D2-46B3-9A6B-4C9F6439C545}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FF44D82-05D2-46B3-9A6B-4C9F6439C545}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01A8889F-FDE8-4288-B5F2-851A0FDFB9FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01A8889F-FDE8-4288-B5F2-851A0FDFB9FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01A8889F-FDE8-4288-B5F2-851A0FDFB9FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01A8889F-FDE8-4288-B5F2-851A0FDFB9FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E303A5FD-11F2-48D7-AE01-ECD4CBF3E1D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E303A5FD-11F2-48D7-AE01-ECD4CBF3E1D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E303A5FD-11F2-48D7-AE01-ECD4CBF3E1D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E303A5FD-11F2-48D7-AE01-ECD4CBF3E1D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6046423-F605-4EBB-9503-82474500DB41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6046423-F605-4EBB-9503-82474500DB41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6046423-F605-4EBB-9503-82474500DB41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6046423-F605-4EBB-9503-82474500DB41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
