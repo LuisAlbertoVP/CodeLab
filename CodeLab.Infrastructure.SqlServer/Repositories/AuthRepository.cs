@@ -2,7 +2,7 @@ using System.Data;
 using CodeLab.Infrastructure.SqlServer.Contracts.DTOs;
 using CodeLab.Infrastructure.SqlServer.Contracts.Exceptions;
 using CodeLab.Infrastructure.SqlServer.Contracts.Interfaces;
-using CodeLab.Infrastructure.SqlServer.Data;
+using CodeLab.Infrastructure.SqlServer.Providers;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 

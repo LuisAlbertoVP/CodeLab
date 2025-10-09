@@ -10,7 +10,8 @@ using CodeLab.Infrastructure.Logging.Services;
 using CodeLab.Infrastructure.RabbitMq.Contracts.Interfaces;
 using CodeLab.Infrastructure.RabbitMq.Services;
 using CodeLab.Infrastructure.SqlServer.Contracts.Interfaces;
-using CodeLab.Infrastructure.SqlServer.Data;
+using CodeLab.Infrastructure.SqlServer.Extensions;
+using CodeLab.Infrastructure.SqlServer.Providers;
 using CodeLab.Infrastructure.SqlServer.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -19,21 +20,21 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
+    builder.Configuration.AddSqlServerConfiguration();
     builder.Services.AddDbContext<CodeLabContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("CodeLabDatabase")));
 
-    var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()!;
+    var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
     builder.Services.AddSingleton(jwtSettings);
+    builder.Services.AddScoped<IJwtService, JwtService>();
 
-    var serilogSettings = builder.Configuration.GetSection("SerilogSettings").Get<SerilogSettings>()!;
+    var serilogSettings = builder.Configuration.GetSection("SerilogSettings").Get<SerilogSettings>();
     SerilogConfiguration.ConfigureLogger(serilogSettings);
     builder.Services.AddSingleton<ICodeLabLogger, CodeLabLogger>();
 
     builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
     builder.Services.AddApplicationServices();
-
-    builder.Services.AddScoped<IJwtService, JwtService>();
 
     builder.Services.AddSingleton<IMailPublisherService, MailPublisherService>();
 
