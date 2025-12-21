@@ -8,7 +8,6 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.scss'
 })
 export class App {
-  readonly title = 'CodeLab';
-  readonly currentYear = new Date().getFullYear();
-  version = signal('CodeLab');
+  currentYear = signal(new Date().getFullYear());
+  version = signal('1.0');
 }
