@@ -2,14 +2,14 @@
   <form [formGroup]="form" (ngSubmit)="iniciarSesion()" class="shadow-md p-10 m-5">
     <h2 class="text-blue-900 mb-5">Iniciar sesi&oacute;n</h2>
     <p>
-      <mat-form-field>
+      <mat-form-field class="w-full">
         <mat-label>Correo</mat-label>
         <input matInput formControlName="correo" type="email" />
         <mat-icon matSuffix>email</mat-icon>
       </mat-form-field>
     </p>
     <p>
-      <mat-form-field>
+      <mat-form-field class="w-full">
         <mat-label>Clave</mat-label>
         <input matInput formControlName="clave" [type]="ocultar() ? 'password' : 'text'" />
         <button matIconButton matSuffix type="button" (click)="ocultar.set(!ocultar())">
@@ -19,6 +19,6 @@
         </button>
       </mat-form-field>
     </p>
-    <button matButton="filled" type="submit" [disabled]="isLoading()">Iniciar sesi&oacute;n</button>
+    <button codelabButton appareance="primary" type="submit" [disabled]="isLoading()">Iniciar sesi&oacute;n</button>
   </form>
 </div>

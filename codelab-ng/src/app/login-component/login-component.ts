@@ -5,13 +5,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { CodelabButton } from '../shared/components/codelab-button/codelab-button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginService } from './login-service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login-component',
-  imports: [MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, ReactiveFormsModule],
+  imports: [MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, CodelabButton, ReactiveFormsModule],
   templateUrl: './login-component.html'
 })
 export class LoginComponent {
