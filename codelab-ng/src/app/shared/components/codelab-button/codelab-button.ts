@@ -8,15 +8,15 @@ import { MatRippleModule } from '@angular/material/core';
   styleUrl: './codelab-button.scss',
 })
 export class CodelabButton {
-  appareance = input.required<'primary' | 'danger'>();
+  codelabButton = input.required<'primary' | 'danger'>();
 
   @HostBinding('class.primary')
   get isPrimary() {
-    return this.appareance() === 'primary';
+    return this.codelabButton() === 'primary';
   }
 
   @HostBinding('class.danger')
   get isDanger() {
-    return this.appareance() === 'danger';
+    return this.codelabButton() === 'danger';
   }
 }
