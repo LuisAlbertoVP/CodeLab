@@ -68,7 +68,7 @@ try
     {
         options.AddPolicy("AllowAngularApp", policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            policy.WithOrigins("https://localhost:4200")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -93,6 +93,7 @@ try
     }
 
     app.UseHttpsRedirection();
+    app.UseRouting();
     app.UseCors("AllowAngularApp");
     app.MapControllers();
     app.Run(); 
