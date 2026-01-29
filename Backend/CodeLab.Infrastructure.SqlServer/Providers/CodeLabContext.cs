@@ -11,7 +11,10 @@ public sealed class CodeLabContext : DbContext
     public CodeLabContext(DbContextOptions<CodeLabContext> options) : base(options) { }
 
     public DbSet<Parametros> Parametros { get; set; }
+    public DbSet<RefreshToken> RefreshToken { get; set; }
+    public DbSet<Roles> Roles { get; set; }
     public DbSet<Usuarios> Usuarios { get; set; }
+    public DbSet<UsuarioRol> UsuarioRol { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -22,5 +25,6 @@ public sealed class CodeLabContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Parametros>().HasKey(p => p.Nombre);
+        modelBuilder.Entity<Usuarios>().HasMany(u => u.RefreshTokens).WithOne(t => t.Usuario).HasForeignKey(u => u.IdUsuario);
     }
 }

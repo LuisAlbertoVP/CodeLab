@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../CodeLab.Domain/CodeLab.Domain.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.SqlServer.Contracts/CodeLab.Infrastructure.SqlServer.Contracts.csproj" />
   </ItemGroup>
 

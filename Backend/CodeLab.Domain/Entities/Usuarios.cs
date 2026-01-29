@@ -1,5 +1,3 @@
-using System;
-
 namespace CodeLab.Domain.Entities;
 
 public class Usuarios
@@ -9,4 +7,5 @@ public class Usuarios
     public string Email { get; set; }
     public string Clave { get; set; }
     public DateTime FechaCreacion { get; set; }
+    public List<RefreshToken>? RefreshTokens { get; set; }
 }
