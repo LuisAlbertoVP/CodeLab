@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copiar toda la solución de una sola vez
-COPY . ./
+COPY Backend/ .
 
 # Restaurar dependencias y publicar la API
 RUN dotnet restore CodeLab.Api.Web/CodeLab.Api.Web.csproj
