@@ -4,7 +4,8 @@ namespace CodeLab.Application.Shared.Common;
 
 public class Mediator(IServiceProvider serviceProvider) : IMediator
 {
-    public async Task<TResult> Send<TRequest, TResult>(TRequest request, CancellationToken cancellationToken = default) where TRequest : IRequest<TResult>
+    public async Task<TResult> Send<TRequest, TResult>(TRequest request, CancellationToken cancellationToken = default)
+        where TRequest : IRequest<TResult>
     {
         var handler = serviceProvider.GetService<IRequestHandler<TRequest, TResult>>() ??
             throw new InvalidOperationException($"No handler registered for {typeof(TRequest).Name}");
@@ -19,5 +20,15 @@ public class Mediator(IServiceProvider serviceProvider) : IMediator
         }
 
         return await handlerDelegate();
+    }
+
+    public async Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default)
+        where TNotification : INotification
+    {
+        var handlers = serviceProvider.GetServices<INotificationHandler<TNotification>>() ??
+            throw new InvalidOperationException($"No handler registered for {typeof(TNotification).Name}");
+
+        var tasks = handlers.Select(handler => handler.Handle(notification, cancellationToken));
+        await Task.WhenAll(tasks);
     }
 }

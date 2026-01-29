@@ -17,6 +17,7 @@ public static class ServiceRegisrationExtensions
         var serviceTypes = new[]
         {
             typeof(IRequestHandler<,>),
+            typeof(INotificationHandler<>),
             typeof(IValidator<>)
         };
 

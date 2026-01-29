@@ -1,5 +1,5 @@
 namespace CodeLab.Application.Shared.Common;
 
-public interface IMediator : ISender, IPublisher
+public interface INotification
 {
 }
