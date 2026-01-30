@@ -7,5 +7,6 @@ public class Usuarios
     public string Email { get; set; }
     public string Clave { get; set; }
     public DateTime FechaCreacion { get; set; }
+    public List<UsuarioRol>? UsuarioRol { get; set; }
     public List<RefreshToken>? RefreshTokens { get; set; }
 }

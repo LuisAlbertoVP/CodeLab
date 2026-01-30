@@ -25,6 +25,23 @@ public sealed class CodeLabContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Parametros>().HasKey(p => p.Nombre);
-        modelBuilder.Entity<Usuarios>().HasMany(u => u.RefreshTokens).WithOne(t => t.Usuario).HasForeignKey(u => u.IdUsuario);
+
+        modelBuilder.Entity<Usuarios>()
+            .HasMany(u => u.RefreshTokens)
+            .WithOne(t => t.Usuario)
+            .HasForeignKey(u => u.IdUsuario);
+
+        modelBuilder.Entity<UsuarioRol>(entity =>
+        {
+            entity.HasKey(e => new { e.IdUsuario, e.IdRol });
+
+            entity.HasOne(e => e.Usuario)
+                .WithMany(u => u.UsuarioRol)
+                .HasForeignKey(e => e.IdUsuario);
+
+            entity.HasOne(e => e.Rol)
+                .WithMany(r => r.UsuarioRol)
+                .HasForeignKey(e => e.IdRol);
+        });
     }
 }
