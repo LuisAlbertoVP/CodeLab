@@ -13,7 +13,7 @@ public class RefrescarTokenHandler(
     ICodeLabLogger logger
 ) : IRequestHandler<RefrescarTokenCommand, CodeLabResultado<LoginResultDTO>>
 {
-    public async Task<CodeLabResultado<LoginResultDTO>> Handle(RefrescarTokenCommand request, CancellationToken cancellationToken)
+    public async Task<CodeLabResultado<LoginResultDTO>> Handle(RefrescarTokenCommand request, CancellationToken ct)
     {
         try
         {

@@ -2,6 +2,7 @@ using CodeLab.Application.Identity.Interfaces;
 using CodeLab.Application.Identity.Services;
 using CodeLab.Application.Shared.Behavior;
 using CodeLab.Application.Shared.Common;
+using CodeLab.Domain.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -39,6 +40,7 @@ public static class ServiceRegisrationExtensions
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         services.AddScoped<IMediator, Mediator>();
+        services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
         services.AddScoped<ITokenService, TokenService>();
 
         return services;

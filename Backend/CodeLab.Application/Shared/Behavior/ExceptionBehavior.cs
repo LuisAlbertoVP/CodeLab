@@ -8,11 +8,11 @@ namespace CodeLab.Application.Shared.Behavior;
 
 public class ExceptionBehavior<TInput, TOutput>(ICodeLabLogger logger) : IPipelineBehavior<TInput, TOutput>
 {
-    public async Task<TOutput> Handle(TInput input, Func<Task<TOutput>> next, CancellationToken cancellationToken = default)
+    public async Task<TOutput> Handle(TInput input, Func<Task<TOutput>> next, CancellationToken ct = default)
     {
         try
         {
-            return await next().WaitAsync(cancellationToken);
+            return await next().WaitAsync(ct);
         }
         catch (CodeLabException)
         {

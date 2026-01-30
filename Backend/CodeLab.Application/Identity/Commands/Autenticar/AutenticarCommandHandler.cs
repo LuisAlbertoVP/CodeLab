@@ -14,7 +14,7 @@ public class AutenticarCommandHandler(
     IMediator mediator
 ) : IRequestHandler<AutenticarCommand, CodeLabResultado<LoginResultDTO>>
 {
-    public async Task<CodeLabResultado<LoginResultDTO>> Handle(AutenticarCommand request, CancellationToken cancellationToken)
+    public async Task<CodeLabResultado<LoginResultDTO>> Handle(AutenticarCommand request, CancellationToken ct)
     {
         try
         {
@@ -30,7 +30,7 @@ public class AutenticarCommandHandler(
             var token = tokenService.GenerarToken(usuario.Id, roles);
             
             var usuarioAutenticadoExito = new UsuarioAutenticadoExitoEvent(usuario.Id);
-            await mediator.Publish(usuarioAutenticadoExito, cancellationToken);
+            await mediator.Publish(usuarioAutenticadoExito, ct);
 
             var loginResult = new LoginResultDTO(
                 Token: token,
@@ -42,7 +42,7 @@ public class AutenticarCommandHandler(
         catch (AuthException ex)
         {
             var usuarioNoAutenticado = new UsuarioNoAutenticadoEvent(request.Email, ex);
-            await mediator.Publish(usuarioNoAutenticado, cancellationToken);
+            await mediator.Publish(usuarioNoAutenticado, ct);
 
             return CodeLabResultado<LoginResultDTO>.Error(ex.Message);
         }

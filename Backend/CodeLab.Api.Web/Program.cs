@@ -21,8 +21,13 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Configuration.AddSqlServerConfiguration();
-    builder.Services.AddDbContext<CodeLabContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("CodeLabDatabase")));
+    builder.Services.AddScoped<CodeLabInterceptor>();
+    builder.Services.AddDbContext<CodeLabContext>((serviceProvider, options) =>
+    {
+        var interceptor = serviceProvider.GetRequiredService<CodeLabInterceptor>();
+        options.UseSqlServer(builder.Configuration.GetConnectionString("CodeLabDatabase"))
+            .AddInterceptors(interceptor);
+    });
 
     var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
     builder.Services.AddSingleton(jwtSettings);

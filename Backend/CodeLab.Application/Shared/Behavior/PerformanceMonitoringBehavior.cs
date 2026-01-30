@@ -8,7 +8,7 @@ public class PerformanceMonitoringBehavior<TInput, TOutput>(ICodeLabLogger logge
 {
     private readonly Stopwatch timer = new();
 
-    public async Task<TOutput> Handle(TInput input, Func<Task<TOutput>> next, CancellationToken cancellationToken = default)
+    public async Task<TOutput> Handle(TInput input, Func<Task<TOutput>> next, CancellationToken ct = default)
     {
         timer.Start();
 
