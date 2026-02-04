@@ -5,11 +5,7 @@ namespace CodeLab.Infrastructure.SqlServer.Contracts.Interfaces;
 
 public interface IAuthRepository
 {
-    Task<Usuarios?> ObtenerUsuarioValido(string email, string clave);
-
-    Task<List<string?>> ObtenerRolesUsuario(long idUsuario);
+    Task<Usuarios?> ObtenerUsuarioPorEmail(string email);
     
-    Task GuardarUsuario(Usuarios usuario);
-
     Task<UsuarioAutenticadoDto> RefrescarToken(string token);
 }

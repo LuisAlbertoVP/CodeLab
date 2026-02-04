@@ -1,6 +1,7 @@
 using System.Net;
 using CodeLab.Application.Shared.Common;
 using CodeLab.Application.Shared.Exceptions;
+using CodeLab.Domain.Exceptions;
 using CodeLab.Infrastructure.Logging.Contracts.Interfaces;
 using FluentValidation;
 
@@ -12,7 +13,7 @@ public class ExceptionBehavior<TInput, TOutput>(ICodeLabLogger logger) : IPipeli
     {
         try
         {
-            return await next().WaitAsync(ct);
+            return await next();
         }
         catch (CodeLabException)
         {
@@ -22,6 +23,10 @@ public class ExceptionBehavior<TInput, TOutput>(ICodeLabLogger logger) : IPipeli
         {
             logger.LogError($"Request [{typeof(TInput).Name}]: {ex.Message}", ex);
             throw new CodeLabException(HttpStatusCode.BadRequest, ex.Message);
+        }
+        catch (DomainException ex)
+        {
+            throw new CodeLabException(HttpStatusCode.Conflict, ex.Message);
         }
         catch (Exception ex)
         {

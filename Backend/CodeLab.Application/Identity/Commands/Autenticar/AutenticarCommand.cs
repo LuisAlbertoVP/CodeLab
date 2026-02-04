@@ -3,4 +3,4 @@ using CodeLab.Application.Shared.Results;
 
 namespace CodeLab.Application.Identity.Commands.Autenticar;
 
-public record AutenticarCommand(string Email, string Clave) : IRequest<CodeLabResultado<LoginResultDTO>>;
+public record AutenticarCommand(string Email, string Clave) : ICommand<CodeLabResultado<LoginResultDTO>>;

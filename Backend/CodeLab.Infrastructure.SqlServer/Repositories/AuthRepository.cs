@@ -11,26 +11,12 @@ namespace CodeLab.Infrastructure.SqlServer.Repositories;
 
 public class AuthRepository(CodeLabContext context) : IAuthRepository
 {
-    public Task<Usuarios?> ObtenerUsuarioValido(string email, string clave)
+    public Task<Usuarios?> ObtenerUsuarioPorEmail(string email)
     {
-        return context.Usuarios.FirstOrDefaultAsync(u => u.Email == email && u.Clave == clave);
-    }
-
-    public Task<List<string?>> ObtenerRolesUsuario(long idUsuario)
-    {
-        return (from rol in context.Roles
-                join usuariorol in context.UsuarioRol
-                on rol.Id equals usuariorol.IdRol
-                where usuariorol.IdUsuario == idUsuario
-                select
-                    rol.Codigo
-                ).ToListAsync();
-    }
-
-    public async Task GuardarUsuario(Usuarios usuario)
-    {
-        context.Usuarios.Update(usuario);
-        await context.SaveChangesAsync();
+        return context.Usuarios
+            .Include(u => u.UsuarioRol)
+            .ThenInclude(ur => ur.Rol)
+            .FirstOrDefaultAsync(u => u.Email == email);
     }
 
     public async Task<UsuarioAutenticadoDto> RefrescarToken(string token)
