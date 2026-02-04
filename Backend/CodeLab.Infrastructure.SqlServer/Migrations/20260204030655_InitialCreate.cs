@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CodeLab.Infrastructure.SqlServer.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCatalog : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,7 +53,10 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Clave = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Estado = table.Column<bool>(type: "bit", nullable: false),
+                    IntentosFallidos = table.Column<int>(type: "int", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UltimoAcceso = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -107,6 +112,33 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Parametros",
+                columns: new[] { "Nombre", "FechaCreacion", "FechaModificacion", "Valor" },
+                values: new object[,]
+                {
+                    { "JwtSettings:Audience", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "localhost" },
+                    { "JwtSettings:ExpiryMinutes", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "15" },
+                    { "JwtSettings:Issuer", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "localhost" },
+                    { "JwtSettings:Secret", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "9fK2mA7QpL!eRZx6W@D3#yU8T$hJ0CkN4B^EwV1SgM" },
+                    { "SerilogSettings:Ruta", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "/home/Logs/CodeLab" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Codigo", "Descripcion", "FechaCreacion", "Nombre", "UsuarioCreacion" },
+                values: new object[] { 1, "ADMIN", null, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Administrador", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Usuarios",
+                columns: new[] { "Id", "Clave", "Email", "Estado", "FechaCreacion", "IntentosFallidos", "Nombre", "UltimoAcceso" },
+                values: new object[] { 1, "12345", "luisv-1@hotmail.com", true, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, "Luis Velastegui", null });
+
+            migrationBuilder.InsertData(
+                table: "UsuarioRol",
+                columns: new[] { "IdRol", "IdUsuario", "FechaAsignacion" },
+                values: new object[] { 1, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_IdUsuario",

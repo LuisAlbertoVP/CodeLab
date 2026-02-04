@@ -1,5 +1,6 @@
 using CodeLab.Api.Web.Middleware;
 using CodeLab.Application.Shared.Extensions;
+using CodeLab.Domain.Interfaces;
 using CodeLab.Infrastructure.Jwt.Contracts.Interfaces;
 using CodeLab.Infrastructure.Jwt.Contracts.Settings;
 using CodeLab.Infrastructure.Jwt.Services;
@@ -37,11 +38,12 @@ try
     SerilogConfiguration.ConfigureLogger(serilogSettings);
     builder.Services.AddSingleton<ICodeLabLogger, CodeLabLogger>();
 
+    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
     builder.Services.AddApplicationServices();
 
-    builder.Services.AddSingleton<IMailPublisherService, MailPublisherService>();
+    //builder.Services.AddSingleton<IMailPublisherService, MailPublisherService>();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(c =>
@@ -86,8 +88,8 @@ try
 
     var app = builder.Build();
 
-    var mailService = app.Services.GetRequiredService<IMailPublisherService>();
-    await mailService.InitializeAsync();
+    //var mailService = app.Services.GetRequiredService<IMailPublisherService>();
+    //await mailService.InitializeAsync();
 
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 

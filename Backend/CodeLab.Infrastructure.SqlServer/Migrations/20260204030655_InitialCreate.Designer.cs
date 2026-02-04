@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeLab.Infrastructure.SqlServer.Migrations
 {
     [DbContext(typeof(CodeLabContext))]
-    [Migration("20260130030330_InitialCatalog")]
-    partial class InitialCatalog
+    [Migration("20260204030655_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,6 +43,38 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                     b.HasKey("Nombre");
 
                     b.ToTable("Parametros");
+
+                    b.HasData(
+                        new
+                        {
+                            Nombre = "JwtSettings:Secret",
+                            FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Valor = "9fK2mA7QpL!eRZx6W@D3#yU8T$hJ0CkN4B^EwV1SgM"
+                        },
+                        new
+                        {
+                            Nombre = "JwtSettings:Issuer",
+                            FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Valor = "localhost"
+                        },
+                        new
+                        {
+                            Nombre = "JwtSettings:Audience",
+                            FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Valor = "localhost"
+                        },
+                        new
+                        {
+                            Nombre = "JwtSettings:ExpiryMinutes",
+                            FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Valor = "15"
+                        },
+                        new
+                        {
+                            Nombre = "SerilogSettings:Ruta",
+                            FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Valor = "/home/Logs/CodeLab"
+                        });
                 });
 
             modelBuilder.Entity("CodeLab.Domain.Entities.RefreshToken", b =>
@@ -111,6 +143,16 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Codigo = "ADMIN",
+                            FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Nombre = "Administrador",
+                            UsuarioCreacion = 1
+                        });
                 });
 
             modelBuilder.Entity("CodeLab.Domain.Entities.UsuarioRol", b =>
@@ -129,6 +171,14 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                     b.HasIndex("IdRol");
 
                     b.ToTable("UsuarioRol");
+
+                    b.HasData(
+                        new
+                        {
+                            IdUsuario = 1,
+                            IdRol = 1,
+                            FechaAsignacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("CodeLab.Domain.Entities.Usuarios", b =>
@@ -147,16 +197,37 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("IntentosFallidos")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("UltimoAcceso")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Clave = "12345",
+                            Email = "luisv-1@hotmail.com",
+                            Estado = true,
+                            FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IntentosFallidos = 0,
+                            Nombre = "Luis Velastegui"
+                        });
                 });
 
             modelBuilder.Entity("CodeLab.Domain.Entities.RefreshToken", b =>

@@ -23,7 +23,8 @@ public class TokenService(IJwtService jwtService) : ITokenService
         {
             Id = rawToken,
             Token = tokenString,
-            FechaExpiracion = fechaExpiracion
+            FechaExpiracion = fechaExpiracion,
+            FechaCreacion = DateTime.UtcNow
         };
         return refreshToken;
     }

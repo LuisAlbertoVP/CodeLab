@@ -28,7 +28,9 @@ public class Mediator(IServiceProvider serviceProvider) : IMediator
         var handlers = serviceProvider.GetServices<INotificationHandler<TNotification>>() ??
             throw new InvalidOperationException($"No handler registered for {typeof(TNotification).Name}");
 
-        var tasks = handlers.Select(handler => handler.Handle(notification, ct));
-        await Task.WhenAll(tasks);
+        foreach (var handler in handlers)
+        {
+            await handler.Handle(notification, ct);
+        }
     }
 }

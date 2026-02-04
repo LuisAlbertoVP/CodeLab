@@ -24,12 +24,69 @@ public sealed class CodeLabContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Parametros>().HasKey(p => p.Nombre);
+        modelBuilder.Entity<Parametros>(entity =>
+        {
+            entity.HasKey(p => p.Nombre);
 
-        modelBuilder.Entity<Usuarios>()
-            .HasMany(u => u.RefreshTokens)
-            .WithOne(t => t.Usuario)
-            .HasForeignKey(u => u.IdUsuario);
+            entity.HasData([
+                new Parametros {
+                    Nombre = "JwtSettings:Secret",
+                    Valor = "9fK2mA7QpL!eRZx6W@D3#yU8T$hJ0CkN4B^EwV1SgM",
+                    FechaCreacion = new DateTime(2026, 1, 1)
+                },
+                new Parametros {
+                    Nombre = "JwtSettings:Issuer",
+                    Valor = "localhost",
+                    FechaCreacion = new DateTime(2026, 1, 1)
+                },
+                new Parametros {
+                    Nombre = "JwtSettings:Audience",
+                    Valor = "localhost",
+                    FechaCreacion = new DateTime(2026, 1, 1)
+                },
+                new Parametros {
+                    Nombre = "JwtSettings:ExpiryMinutes",
+                    Valor = "15",
+                    FechaCreacion = new DateTime(2026, 1, 1)
+                },
+                new Parametros {
+                    Nombre = "SerilogSettings:Ruta",
+                    Valor = "/home/Logs/CodeLab",
+                    FechaCreacion = new DateTime(2026, 1, 1)
+                }
+            ]);
+        });
+
+        modelBuilder.Entity<Usuarios>(entity =>
+        {
+            entity.
+                HasMany(u => u.RefreshTokens)
+                .WithOne(t => t.Usuario)
+                .HasForeignKey(u => u.IdUsuario);
+
+            entity.
+                HasData(new Usuarios
+                {
+                    Id = 1,
+                    Email = "luisv-1@hotmail.com",
+                    Clave = "12345",
+                    Nombre = "Luis Velastegui",
+                    Estado = true,
+                    FechaCreacion = new DateTime(2026, 1, 1)
+                });
+        });
+
+        modelBuilder.Entity<Roles>().HasData(
+            new Roles
+            {
+                Id = 1,
+                Codigo = "ADMIN",
+                Nombre = "Administrador",
+                UsuarioCreacion = 1,
+                FechaCreacion = new DateTime(2026, 1, 1)
+            }
+        );
+
 
         modelBuilder.Entity<UsuarioRol>(entity =>
         {
@@ -42,6 +99,14 @@ public sealed class CodeLabContext : DbContext
             entity.HasOne(e => e.Rol)
                 .WithMany(r => r.UsuarioRol)
                 .HasForeignKey(e => e.IdRol);
+
+            entity
+                .HasData(new UsuarioRol
+                {
+                    IdUsuario = 1,
+                    IdRol = 1,
+                    FechaAsignacion = new DateTime(2026, 1, 1)
+                });
         });
     }
 }

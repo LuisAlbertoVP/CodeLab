@@ -12,7 +12,7 @@ public class Usuarios : BaseEntity
     public bool Estado { get; set; }
     public int IntentosFallidos { get; set; }
     public DateTime FechaCreacion { get; set; }
-    public DateTime UltimoAcceso { get; set; }
+    public DateTime? UltimoAcceso { get; set; }
     public List<UsuarioRol> UsuarioRol { get; set; } = [];
     public List<RefreshToken> RefreshTokens { get; set; } = [];
 
