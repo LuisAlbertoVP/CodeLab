@@ -1,8 +1,8 @@
 using System.Net;
+using CodeLab.Application.Interfaces.Logging;
 using CodeLab.Application.Shared.Common;
 using CodeLab.Application.Shared.Exceptions;
 using CodeLab.Domain.Exceptions;
-using CodeLab.Infrastructure.Logging.Contracts.Interfaces;
 using FluentValidation;
 
 namespace CodeLab.Application.Shared.Behavior;

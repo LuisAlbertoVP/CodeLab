@@ -1,3 +1,4 @@
+using CodeLab.Application.Interfaces.RabbitMq;
 using CodeLab.Infrastructure.RabbitMq.Contracts.Interfaces;
 using CodeLab.Infrastructure.RabbitMq.Services;
 using CodeLab.Service.Mail;

@@ -1,5 +1,5 @@
 using System.Text;
-using CodeLab.Infrastructure.RabbitMq.Contracts.Interfaces;
+using CodeLab.Application.Interfaces.RabbitMq;
 using RabbitMQ.Client;
 
 namespace CodeLab.Infrastructure.RabbitMq.Services;

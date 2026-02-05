@@ -1,6 +1,6 @@
 using System.Diagnostics;
+using CodeLab.Application.Interfaces.Logging;
 using CodeLab.Application.Shared.Common;
-using CodeLab.Infrastructure.Logging.Contracts.Interfaces;
 
 namespace CodeLab.Application.Shared.Behavior;
 

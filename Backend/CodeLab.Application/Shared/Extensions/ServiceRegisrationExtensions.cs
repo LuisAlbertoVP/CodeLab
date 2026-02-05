@@ -1,7 +1,7 @@
-using CodeLab.Application.Identity.Interfaces;
-using CodeLab.Application.Identity.Services;
 using CodeLab.Application.Shared.Behavior;
 using CodeLab.Application.Shared.Common;
+using CodeLab.Application.UseCases.Identity.Interfaces;
+using CodeLab.Application.UseCases.Identity.Services;
 using CodeLab.Domain.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;

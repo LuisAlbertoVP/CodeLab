@@ -1,8 +1,8 @@
 using System.Text;
-using CodeLab.Application.Identity.Commands.Autenticar;
-using CodeLab.Application.Identity.Commands.RefrescarToken;
 using CodeLab.Application.Shared.Common;
 using CodeLab.Application.Shared.Results;
+using CodeLab.Application.UseCases.Identity.Commands.Autenticar;
+using CodeLab.Application.UseCases.Identity.Commands.RefrescarToken;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodeLab.Api.Web.Controllers;

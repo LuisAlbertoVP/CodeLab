@@ -1,11 +1,13 @@
 using CodeLab.Api.Web.Middleware;
+using CodeLab.Application.Interfaces.Database;
+using CodeLab.Application.Interfaces.Jwt;
+using CodeLab.Application.Interfaces.Logging;
 using CodeLab.Application.Shared.Extensions;
 using CodeLab.Domain.Interfaces;
 using CodeLab.Infrastructure.Jwt.Contracts.Interfaces;
 using CodeLab.Infrastructure.Jwt.Contracts.Settings;
 using CodeLab.Infrastructure.Jwt.Services;
 using CodeLab.Infrastructure.Logging.Configurations;
-using CodeLab.Infrastructure.Logging.Contracts.Interfaces;
 using CodeLab.Infrastructure.Logging.Contracts.Settings;
 using CodeLab.Infrastructure.Logging.Services;
 using CodeLab.Infrastructure.RabbitMq.Contracts.Interfaces;

@@ -1,16 +1,16 @@
-using CodeLab.Infrastructure.Logging.Contracts.Settings;
+using CodeLab.Application.Interfaces.Logging;
 using Serilog;
 
 namespace CodeLab.Infrastructure.Logging.Configurations;
 
-public static class SerilogConfiguration
-{
-    public static void ConfigureLogger(SerilogSettings settings)
+public class SerilogConfiguration(IConfigLogProvider configLogProvider)
+{    
+    public void ConfigureLogger()
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .WriteTo.Async(x => x.File(
-                settings.Ruta,
+                configLogProvider.Ruta,
                 rollingInterval: RollingInterval.Day,
                 rollOnFileSizeLimit: true
             ))

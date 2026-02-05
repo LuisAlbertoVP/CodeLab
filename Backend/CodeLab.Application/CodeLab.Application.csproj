@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../CodeLab.Domain/CodeLab.Domain.csproj" />
-    <ProjectReference Include="../CodeLab.Infrastructure.Excel.Contracts/CodeLab.Infrastructure.Excel.Contracts.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.Jwt.Contracts/CodeLab.Infrastructure.Jwt.Contracts.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.Logging.Contracts/CodeLab.Infrastructure.Logging.Contracts.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.RabbitMq.Contracts/CodeLab.Infrastructure.RabbitMq.Contracts.csproj" />
@@ -18,11 +17,6 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Identity/Interfaces/" />
-    <Folder Include="Identity/Services/" />
   </ItemGroup>
 
 </Project>

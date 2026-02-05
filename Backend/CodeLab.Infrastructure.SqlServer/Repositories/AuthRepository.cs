@@ -1,8 +1,7 @@
 using System.Data;
+using CodeLab.Application.DTOs.Database;
+using CodeLab.Application.Interfaces.Database;
 using CodeLab.Domain.Entities;
-using CodeLab.Infrastructure.SqlServer.Contracts.DTOs;
-using CodeLab.Infrastructure.SqlServer.Contracts.Exceptions;
-using CodeLab.Infrastructure.SqlServer.Contracts.Interfaces;
 using CodeLab.Infrastructure.SqlServer.Providers;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
@@ -36,12 +35,6 @@ public class AuthRepository(CodeLabContext context) : IAuthRepository
         if (usuario != null)
         {
             usuario.Roles = (await multi.ReadAsync<string>()).ToList();
-        }
-
-        var outputValue = parameters.Get<string>("@mensaje");
-        if (!string.IsNullOrEmpty(outputValue))
-        {
-            throw new AuthException(outputValue);
         }
 
         return usuario;

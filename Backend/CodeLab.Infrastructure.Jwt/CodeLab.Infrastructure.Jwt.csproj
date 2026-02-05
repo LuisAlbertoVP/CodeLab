@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../CodeLab.Infrastructure.Jwt.Contracts/CodeLab.Infrastructure.Jwt.Contracts.csproj" />
+    <ProjectReference Include="../CodeLab.Application/CodeLab.Application.csproj" />
   </ItemGroup>
-
 </Project>

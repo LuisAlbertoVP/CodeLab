@@ -1,13 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using CodeLab.Infrastructure.Jwt.Contracts.Interfaces;
-using CodeLab.Infrastructure.Jwt.Contracts.Settings;
+using CodeLab.Application.Interfaces.Jwt;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CodeLab.Infrastructure.Jwt.Services;
 
-public class JwtService(JwtSettings jwtSettings) : IJwtService
+public class JwtService(IConfigJwtProvider configJwtProvider) : IJwtService
 {
     public string GenerateToken(int id, List<string> roles)
     {
@@ -22,14 +21,14 @@ public class JwtService(JwtSettings jwtSettings) : IJwtService
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configJwtProvider.Secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: jwtSettings.Issuer,
-            audience: jwtSettings.Audience,
+            issuer: configJwtProvider.Issuer,
+            audience: configJwtProvider.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(jwtSettings.ExpiryMinutes),
+            expires: DateTime.UtcNow.AddMinutes(configJwtProvider.ExpiryMinutes),
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);

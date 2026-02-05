@@ -11,6 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../CodeLab.Infrastructure.RabbitMq.Contracts/CodeLab.Infrastructure.RabbitMq.Contracts.csproj" />
+    <ProjectReference Include="../CodeLab.Application/CodeLab.Application.csproj" />
   </ItemGroup>
 </Project>
