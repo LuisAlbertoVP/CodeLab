@@ -3,7 +3,6 @@ using System.Text;
 using CodeLab.Application.Interfaces.Jwt;
 using CodeLab.Application.UseCases.Identity.Interfaces;
 using CodeLab.Domain.Entities;
-using CodeLab.Infrastructure.Jwt.Contracts.Interfaces;
 
 namespace CodeLab.Application.UseCases.Identity.Services;
 

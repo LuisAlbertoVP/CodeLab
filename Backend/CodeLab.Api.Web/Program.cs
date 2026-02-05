@@ -4,15 +4,10 @@ using CodeLab.Application.Interfaces.Jwt;
 using CodeLab.Application.Interfaces.Logging;
 using CodeLab.Application.Shared.Extensions;
 using CodeLab.Domain.Interfaces;
-using CodeLab.Infrastructure.Jwt.Contracts.Interfaces;
-using CodeLab.Infrastructure.Jwt.Contracts.Settings;
+using CodeLab.Infrastructure.Config;
 using CodeLab.Infrastructure.Jwt.Services;
-using CodeLab.Infrastructure.Logging.Configurations;
-using CodeLab.Infrastructure.Logging.Contracts.Settings;
 using CodeLab.Infrastructure.Logging.Services;
-using CodeLab.Infrastructure.RabbitMq.Contracts.Interfaces;
 using CodeLab.Infrastructure.RabbitMq.Services;
-using CodeLab.Infrastructure.SqlServer.Contracts.Interfaces;
 using CodeLab.Infrastructure.SqlServer.Extensions;
 using CodeLab.Infrastructure.SqlServer.Providers;
 using CodeLab.Infrastructure.SqlServer.Repositories;
@@ -32,12 +27,10 @@ try
             .AddInterceptors(interceptor);
     });
 
-    var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
-    builder.Services.AddSingleton(jwtSettings);
-    builder.Services.AddScoped<IJwtService, JwtService>();
+    builder.Services.AddSingleton<IConfigJwtProvider, ConfigJwtProvider>();
+    builder.Services.AddSingleton<IJwtService, JwtService>();
 
-    var serilogSettings = builder.Configuration.GetSection("SerilogSettings").Get<SerilogSettings>();
-    SerilogConfiguration.ConfigureLogger(serilogSettings);
+    builder.Services.AddSingleton<IConfigLogProvider, ConfigLogProvider>();
     builder.Services.AddSingleton<ICodeLabLogger, CodeLabLogger>();
 
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

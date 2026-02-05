@@ -1,7 +1,6 @@
 using CodeLab.Application.Interfaces.Database;
 using CodeLab.Application.Shared.Results;
 using CodeLab.Application.UseCases.Identity.Interfaces;
-using CodeLab.Infrastructure.SqlServer.Contracts.Interfaces;
 
 namespace CodeLab.Application.UseCases.Identity.Services;
 

@@ -3,9 +3,6 @@ using CodeLab.Application.Interfaces.Jwt;
 using CodeLab.Application.Interfaces.Logging;
 using CodeLab.Application.Shared.Common;
 using CodeLab.Application.Shared.Results;
-using CodeLab.Infrastructure.Jwt.Contracts.Interfaces;
-using CodeLab.Infrastructure.SqlServer.Contracts.Exceptions;
-using CodeLab.Infrastructure.SqlServer.Contracts.Interfaces;
 
 namespace CodeLab.Application.UseCases.Identity.Commands.RefrescarToken;
 
