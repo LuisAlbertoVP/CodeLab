@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeLab.Infrastructure.SqlServer.Migrations
 {
     [DbContext(typeof(CodeLabContext))]
-    [Migration("20260204030655_InitialCreate")]
+    [Migration("20260206021110_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -47,6 +47,18 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                     b.HasData(
                         new
                         {
+                            Nombre = "Messages:ErrorGenerico",
+                            FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Valor = "Ocurrió un problema al procesar la solicitud. Intente nuevamente más tarde."
+                        },
+                        new
+                        {
+                            Nombre = "Messages:Timeout",
+                            FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Valor = "La operación excedió el tiempo límite."
+                        },
+                        new
+                        {
                             Nombre = "JwtSettings:Secret",
                             FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Valor = "9fK2mA7QpL!eRZx6W@D3#yU8T$hJ0CkN4B^EwV1SgM"
@@ -73,7 +85,7 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                         {
                             Nombre = "SerilogSettings:Ruta",
                             FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Valor = "/home/Logs/CodeLab"
+                            Valor = "/home/luisvp/Logs/CodeLab"
                         });
                 });
 

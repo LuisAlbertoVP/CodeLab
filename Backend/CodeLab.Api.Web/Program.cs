@@ -7,13 +7,16 @@ using CodeLab.Application.Shared.Extensions;
 using CodeLab.Domain.Interfaces;
 using CodeLab.Infrastructure.Config;
 using CodeLab.Infrastructure.Jwt.Services;
+using CodeLab.Infrastructure.Logging.Extensions;
 using CodeLab.Infrastructure.Logging.Services;
+using CodeLab.Infrastructure.Providers.Configurations;
 using CodeLab.Infrastructure.RabbitMq.Services;
 using CodeLab.Infrastructure.SqlServer.Extensions;
 using CodeLab.Infrastructure.SqlServer.Providers;
 using CodeLab.Infrastructure.SqlServer.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 try
 {
@@ -27,6 +30,8 @@ try
         options.UseSqlServer(builder.Configuration.GetConnectionString("CodeLabDatabase"))
             .AddInterceptors(interceptor);
     });
+
+    builder.Services.AddSingleton<IConfigMessagesProvider, ConfigMessagesProvider>();
 
     builder.Services.AddSingleton<IConfigJwtProvider, ConfigJwtProvider>();
     builder.Services.AddSingleton<IJwtService, JwtService>();
@@ -79,6 +84,12 @@ try
     });
 
     builder.Services.AddControllers();
+
+    builder.Host.UseSerilog((context, services, cfg) =>
+    {
+        var configLogProvider = services.GetRequiredService<IConfigLogProvider>();
+        cfg.ConfigureLogger(configLogProvider);
+    });
 
     Console.WriteLine("Configuración de servicios completada.");
 

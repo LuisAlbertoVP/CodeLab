@@ -30,6 +30,16 @@ public sealed class CodeLabContext : DbContext
 
             entity.HasData([
                 new Parametros {
+                    Nombre = "Messages:ErrorGenerico",
+                    Valor = "Ocurrió un problema al procesar la solicitud. Intente nuevamente más tarde.",
+                    FechaCreacion = new DateTime(2026, 1, 1)
+                },
+                new Parametros {
+                    Nombre = "Messages:Timeout",
+                    Valor = "La operación excedió el tiempo límite.",
+                    FechaCreacion = new DateTime(2026, 1, 1)
+                },
+                new Parametros {
                     Nombre = "JwtSettings:Secret",
                     Valor = "9fK2mA7QpL!eRZx6W@D3#yU8T$hJ0CkN4B^EwV1SgM",
                     FechaCreacion = new DateTime(2026, 1, 1)
@@ -51,7 +61,7 @@ public sealed class CodeLabContext : DbContext
                 },
                 new Parametros {
                     Nombre = "SerilogSettings:Ruta",
-                    Valor = "/home/Logs/CodeLab",
+                    Valor = "/home/luisvp/Logs/CodeLab",
                     FechaCreacion = new DateTime(2026, 1, 1)
                 }
             ]);

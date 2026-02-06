@@ -7,16 +7,16 @@ public class CodeLabLogger : ICodeLabLogger
 {
     public void LogInformation(string message)
     {
-        Log.Information(message);
+        Log.ForContext("isMyApp", true).Information(message);
     }
 
     public void LogWarning(string message)
     {
-        Log.Warning(message);
+        Log.ForContext("isMyApp", true).Warning(message);
     }
 
     public void LogError(string message, Exception ex)
     {
-        Log.Error(ex, message);
+        Log.ForContext("isMyApp", true).Error(ex, message);
     }
 }

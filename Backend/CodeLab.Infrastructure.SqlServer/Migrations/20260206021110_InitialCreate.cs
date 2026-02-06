@@ -122,7 +122,9 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                     { "JwtSettings:ExpiryMinutes", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "15" },
                     { "JwtSettings:Issuer", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "localhost" },
                     { "JwtSettings:Secret", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "9fK2mA7QpL!eRZx6W@D3#yU8T$hJ0CkN4B^EwV1SgM" },
-                    { "SerilogSettings:Ruta", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "/home/Logs/CodeLab" }
+                    { "Messages:ErrorGenerico", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Ocurrió un problema al procesar la solicitud. Intente nuevamente más tarde." },
+                    { "Messages:Timeout", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "La operación excedió el tiempo límite." },
+                    { "SerilogSettings:Ruta", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "/home/luisvp/Logs/CodeLab" }
                 });
 
             migrationBuilder.InsertData(
