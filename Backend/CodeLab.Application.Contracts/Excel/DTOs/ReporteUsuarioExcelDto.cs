@@ -1,4 +1,4 @@
-namespace CodeLab.Application.DTOs.Excel;
+namespace CodeLab.Application.Contracts.Excel.DTOs;
 
 public class ReporteUsuarioExcelDto
 {

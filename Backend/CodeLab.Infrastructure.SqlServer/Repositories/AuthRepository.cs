@@ -1,6 +1,6 @@
 using System.Data;
-using CodeLab.Application.DTOs.Database;
-using CodeLab.Application.Interfaces.Database;
+using CodeLab.Application.Contracts.Database.DTOs;
+using CodeLab.Application.Contracts.Database.Interfaces;
 using CodeLab.Domain.Entities;
 using CodeLab.Infrastructure.SqlServer.Providers;
 using Dapper;

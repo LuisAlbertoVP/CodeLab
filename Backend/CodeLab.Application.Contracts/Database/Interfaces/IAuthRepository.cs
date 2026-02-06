@@ -1,7 +1,7 @@
-using CodeLab.Application.DTOs.Database;
+using CodeLab.Application.Contracts.Database.DTOs;
 using CodeLab.Domain.Entities;
 
-namespace CodeLab.Application.Interfaces.Database;
+namespace CodeLab.Application.Contracts.Database.Interfaces;
 
 public interface IAuthRepository
 {

@@ -1,4 +1,4 @@
-namespace CodeLab.Application.DTOs.Database;
+namespace CodeLab.Application.Contracts.Database.DTOs;
 
 public class UsuarioAutenticadoDto
 {

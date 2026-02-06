@@ -1,6 +1,6 @@
 using Bogus;
 using ClosedXML.Excel;
-using CodeLab.Application.DTOs.Excel;
+using CodeLab.Application.Contracts.Excel.DTOs;
 using CodeLab.Infrastructure.Excel.Services;
 using FluentAssertions;
 

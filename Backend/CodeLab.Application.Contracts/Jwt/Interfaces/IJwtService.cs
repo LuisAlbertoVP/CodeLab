@@ -1,4 +1,4 @@
-namespace CodeLab.Application.Interfaces.Jwt;
+namespace CodeLab.Application.Contracts.Jwt.Interfaces;
 
 public interface IJwtService
 {

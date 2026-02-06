@@ -1,4 +1,4 @@
-namespace CodeLab.Application.Interfaces.Jwt;
+namespace CodeLab.Application.Contracts.Providers.Interfaces;
 
 public interface IConfigJwtProvider
 {

@@ -1,6 +1,4 @@
-using System;
-
-namespace CodeLab.Application.Interfaces.RabbitMq;
+namespace CodeLab.Application.Contracts.RabbitMq.Interfaces;
 
 public interface IMailConsumerService
 {

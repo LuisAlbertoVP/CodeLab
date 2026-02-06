@@ -1,6 +1,6 @@
-using CodeLab.Application.Interfaces.Database;
-using CodeLab.Application.Interfaces.Jwt;
-using CodeLab.Application.Interfaces.Logging;
+using CodeLab.Application.Contracts.Database.Interfaces;
+using CodeLab.Application.Contracts.Jwt.Interfaces;
+using CodeLab.Application.Contracts.Logging.Interfaces;
 using CodeLab.Application.Shared.Common;
 using CodeLab.Application.Shared.Results;
 

@@ -1,5 +1,5 @@
 using System.Text;
-using CodeLab.Application.Interfaces.RabbitMq;
+using CodeLab.Application.Contracts.RabbitMq.Interfaces;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 

@@ -1,4 +1,4 @@
-using CodeLab.Application.Interfaces.Jwt;
+using CodeLab.Application.Contracts.Providers.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace CodeLab.Infrastructure.Config;

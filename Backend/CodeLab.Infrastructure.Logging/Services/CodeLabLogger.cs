@@ -1,4 +1,4 @@
-using CodeLab.Application.Interfaces.Logging;
+using CodeLab.Application.Contracts.Logging.Interfaces;
 using Serilog;
 
 namespace CodeLab.Infrastructure.Logging.Services;

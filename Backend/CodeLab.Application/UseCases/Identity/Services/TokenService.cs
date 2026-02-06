@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
-using CodeLab.Application.Interfaces.Jwt;
+using CodeLab.Application.Contracts.Jwt.Interfaces;
 using CodeLab.Application.UseCases.Identity.Interfaces;
 using CodeLab.Domain.Entities;
 

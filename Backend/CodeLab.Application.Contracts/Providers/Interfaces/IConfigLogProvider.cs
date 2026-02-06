@@ -1,4 +1,4 @@
-namespace CodeLab.Application.Interfaces.Logging;
+namespace CodeLab.Application.Contracts.Providers.Interfaces;
 
 public interface IConfigLogProvider
 {

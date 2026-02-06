@@ -1,7 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using CodeLab.Application.Interfaces.Jwt;
+using CodeLab.Application.Contracts.Jwt.Interfaces;
+using CodeLab.Application.Contracts.Providers.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CodeLab.Infrastructure.Jwt.Services;

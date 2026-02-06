@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <ProjectReference Include="../CodeLab.Domain/CodeLab.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="../CodeLab.Application.Contracts/CodeLab.Application.Contracts.csproj" />
-  </ItemGroup>
 </Project>

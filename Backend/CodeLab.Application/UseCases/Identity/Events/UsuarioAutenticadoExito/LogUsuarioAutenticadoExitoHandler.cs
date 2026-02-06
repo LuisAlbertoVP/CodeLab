@@ -1,4 +1,4 @@
-using CodeLab.Application.Interfaces.Logging;
+using CodeLab.Application.Contracts.Logging.Interfaces;
 using CodeLab.Application.Shared.Common;
 using CodeLab.Domain.Events;
 

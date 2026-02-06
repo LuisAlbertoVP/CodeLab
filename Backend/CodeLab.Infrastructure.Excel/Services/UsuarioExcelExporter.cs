@@ -1,6 +1,6 @@
 using ClosedXML.Excel;
-using CodeLab.Application.DTOs.Excel;
-using CodeLab.Application.Interfaces.Excel;
+using CodeLab.Application.Contracts.Excel.DTOs;
+using CodeLab.Application.Contracts.Excel.Interfaces;
 
 namespace CodeLab.Infrastructure.Excel.Services;
 

@@ -1,4 +1,4 @@
-using CodeLab.Application.Interfaces.Database;
+using CodeLab.Application.Contracts.Database.Interfaces;
 using CodeLab.Application.Shared.Results;
 using CodeLab.Application.UseCases.Identity.Interfaces;
 

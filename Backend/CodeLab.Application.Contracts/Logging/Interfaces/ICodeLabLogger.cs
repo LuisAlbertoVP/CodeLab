@@ -1,4 +1,4 @@
-namespace CodeLab.Application.Interfaces.Logging;
+namespace CodeLab.Application.Contracts.Logging.Interfaces;
 
 public interface ICodeLabLogger
 {
