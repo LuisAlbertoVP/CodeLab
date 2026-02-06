@@ -18,6 +18,11 @@ public class AuthRepository(CodeLabContext context) : IAuthRepository
             .FirstOrDefaultAsync(u => u.Email == email);
     }
 
+    public async Task AddRefreshToken(RefreshToken refreshToken)
+    {
+        await context.RefreshToken.AddAsync(refreshToken);
+    }
+
     public async Task<UsuarioAutenticadoDto> RefrescarToken(string token)
     {
         using var connection = context.Database.GetDbConnection();

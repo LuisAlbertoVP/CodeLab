@@ -19,7 +19,8 @@ public class AuthService(
         usuario.Autenticar(clave);
 
         var refreshToken = tokenService.GenerarRefreshToken();
-        usuario.AgregarRefreshToken(refreshToken);
+        refreshToken.IdUsuario = usuario.Id;
+        await authRepository.AddRefreshToken(refreshToken);
 
         var roles = usuario.UsuarioRol
             .Where(ur => ur.Rol != null)

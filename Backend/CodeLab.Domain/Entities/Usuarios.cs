@@ -13,8 +13,8 @@ public class Usuarios : BaseEntity
     public int IntentosFallidos { get; set; }
     public DateTime FechaCreacion { get; set; }
     public DateTime? UltimoAcceso { get; set; }
-    public List<UsuarioRol> UsuarioRol { get; set; } = [];
-    public List<RefreshToken> RefreshTokens { get; set; } = [];
+    public List<UsuarioRol> UsuarioRol { get; set; }
+    public List<RefreshToken> RefreshTokens { get; set; }
 
     public void Autenticar(string clave)
     {        
@@ -29,7 +29,7 @@ public class Usuarios : BaseEntity
 
         IntentosFallidos = 0;
         UltimoAcceso = DateTime.UtcNow;
-        AddDomainEvent(new UsuarioAutenticadoEvent(this));
+        //AddDomainEvent(new UsuarioAutenticadoEvent(this));
     }
 
     private bool PuedeAutenticarse() =>
@@ -41,10 +41,5 @@ public class Usuarios : BaseEntity
         IntentosFallidos++;
         if (IntentosFallidos >= 5)
             Estado = false;
-    }
-
-    public void AgregarRefreshToken(RefreshToken refreshToken)
-    {
-        RefreshTokens.Add(refreshToken);
     }
 }

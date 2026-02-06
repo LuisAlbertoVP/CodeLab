@@ -41,7 +41,9 @@ public class AuthController(IMediator mediator) : ControllerBase
             Secure = true,
             SameSite = SameSiteMode.None,
             Path = "/",
-            Expires = new DateTimeOffset(resultado.Valor.Expiration, TimeSpan.Zero)
+            Expires = new DateTimeOffset(
+                DateTime.SpecifyKind(resultado.Valor.Expiration, DateTimeKind.Utc)
+            )
         });
 
         return Ok(new { token = resultado.Valor.Token });

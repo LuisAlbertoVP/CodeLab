@@ -6,6 +6,8 @@ namespace CodeLab.Application.Contracts.Database.Interfaces;
 public interface IAuthRepository
 {
     Task<Usuarios?> ObtenerUsuarioPorEmail(string email);
+
+    Task AddRefreshToken(RefreshToken refreshToken);
     
     Task<UsuarioAutenticadoDto> RefrescarToken(string token);
 }

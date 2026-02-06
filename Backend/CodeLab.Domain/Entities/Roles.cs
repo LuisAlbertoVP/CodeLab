@@ -8,5 +8,5 @@ public class Roles
     public string? Descripcion { get; set; }
     public DateTime FechaCreacion { get; set; }
     public int UsuarioCreacion { get; set; }
-    public List<UsuarioRol> UsuarioRol { get; set; } = [];
+    public List<UsuarioRol> UsuarioRol { get; set; }
 }
