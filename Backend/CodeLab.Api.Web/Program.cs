@@ -3,9 +3,9 @@ using CodeLab.Application.Contracts.Database.Interfaces;
 using CodeLab.Application.Contracts.Jwt.Interfaces;
 using CodeLab.Application.Contracts.Logging.Interfaces;
 using CodeLab.Application.Contracts.Providers.Interfaces;
+using CodeLab.Application.Contracts.Telegram.Interfaces;
 using CodeLab.Application.Shared.Extensions;
 using CodeLab.Domain.Interfaces;
-using CodeLab.Infrastructure.Config;
 using CodeLab.Infrastructure.Jwt.Services;
 using CodeLab.Infrastructure.Logging.Extensions;
 using CodeLab.Infrastructure.Logging.Services;
@@ -14,6 +14,7 @@ using CodeLab.Infrastructure.RabbitMq.Services;
 using CodeLab.Infrastructure.SqlServer.Extensions;
 using CodeLab.Infrastructure.SqlServer.Providers;
 using CodeLab.Infrastructure.SqlServer.Repositories;
+using CodeLab.Infrastructure.Telegram.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -33,11 +34,14 @@ try
 
     builder.Services.AddSingleton<IConfigMessagesProvider, ConfigMessagesProvider>();
 
+    builder.Services.AddSingleton<IConfigLogProvider, ConfigLogProvider>();
+    builder.Services.AddSingleton<ICodeLabLogger, CodeLabLogger>();
+
     builder.Services.AddSingleton<IConfigJwtProvider, ConfigJwtProvider>();
     builder.Services.AddSingleton<IJwtService, JwtService>();
 
-    builder.Services.AddSingleton<IConfigLogProvider, ConfigLogProvider>();
-    builder.Services.AddSingleton<ICodeLabLogger, CodeLabLogger>();
+    builder.Services.AddSingleton<IConfigTelegramProvider, ConfigTelegramProvider>();
+    builder.Services.AddSingleton<ITelegramService, TelegramService>();
 
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IAuthRepository, AuthRepository>();

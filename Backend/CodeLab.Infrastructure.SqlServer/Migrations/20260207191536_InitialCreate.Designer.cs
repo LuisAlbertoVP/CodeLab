@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeLab.Infrastructure.SqlServer.Migrations
 {
     [DbContext(typeof(CodeLabContext))]
-    [Migration("20260206021110_InitialCreate")]
+    [Migration("20260207191536_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,56 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CodeLab.Domain.Entities.OutboundMessage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Canal")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CantidadReintentos")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Destino")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaModificacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaSiguienteReintento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MaxCantidadReintentos")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Mensaje")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UltimoError")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Estado", "FechaSiguienteReintento");
+
+                    b.ToTable("OutboundMessage");
+                });
 
             modelBuilder.Entity("CodeLab.Domain.Entities.Parametros", b =>
                 {
@@ -86,6 +136,18 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                             Nombre = "SerilogSettings:Ruta",
                             FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Valor = "/home/luisvp/Logs/CodeLab"
+                        },
+                        new
+                        {
+                            Nombre = "Telegram:Token",
+                            FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Valor = "8530866806:AAGBQUVsgVoJ8NnaLKXa6ju9hAm-00b95Y0"
+                        },
+                        new
+                        {
+                            Nombre = "Telegram:LastOffset",
+                            FechaCreacion = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Valor = "-1"
                         });
                 });
 
@@ -137,7 +199,7 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
 
                     b.Property<string>("Codigo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
@@ -154,6 +216,9 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Codigo")
+                        .IsUnique();
+
                     b.ToTable("Roles");
 
                     b.HasData(
@@ -165,6 +230,41 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                             Nombre = "Administrador",
                             UsuarioCreacion = 1
                         });
+                });
+
+            modelBuilder.Entity("CodeLab.Domain.Entities.UsuarioCanal", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Canal")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Destino")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaModificacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Canal", "Destino")
+                        .IsUnique();
+
+                    b.HasIndex("IdUsuario", "Canal")
+                        .IsUnique();
+
+                    b.ToTable("UsuarioCanal");
                 });
 
             modelBuilder.Entity("CodeLab.Domain.Entities.UsuarioRol", b =>
@@ -207,7 +307,7 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
@@ -226,6 +326,9 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Usuarios");
 

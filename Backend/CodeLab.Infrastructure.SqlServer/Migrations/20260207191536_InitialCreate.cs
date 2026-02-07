@@ -14,6 +14,29 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "OutboundMessage",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Canal = table.Column<int>(type: "int", nullable: false),
+                    Destino = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tipo = table.Column<int>(type: "int", nullable: false),
+                    Mensaje = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false),
+                    CantidadReintentos = table.Column<int>(type: "int", nullable: false),
+                    MaxCantidadReintentos = table.Column<int>(type: "int", nullable: false),
+                    FechaSiguienteReintento = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UltimoError = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OutboundMessage", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Parametros",
                 columns: table => new
                 {
@@ -33,7 +56,7 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Codigo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Codigo = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -45,13 +68,30 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UsuarioCanal",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdUsuario = table.Column<int>(type: "int", nullable: false),
+                    Canal = table.Column<int>(type: "int", nullable: false),
+                    Destino = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsuarioCanal", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Usuarios",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Clave = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Estado = table.Column<bool>(type: "bit", nullable: false),
                     IntentosFallidos = table.Column<int>(type: "int", nullable: false),
@@ -124,7 +164,9 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                     { "JwtSettings:Secret", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "9fK2mA7QpL!eRZx6W@D3#yU8T$hJ0CkN4B^EwV1SgM" },
                     { "Messages:ErrorGenerico", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Ocurrió un problema al procesar la solicitud. Intente nuevamente más tarde." },
                     { "Messages:Timeout", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "La operación excedió el tiempo límite." },
-                    { "SerilogSettings:Ruta", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "/home/luisvp/Logs/CodeLab" }
+                    { "SerilogSettings:Ruta", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "/home/luisvp/Logs/CodeLab" },
+                    { "Telegram:LastOffset", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "-1" },
+                    { "Telegram:Token", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "8530866806:AAGBQUVsgVoJ8NnaLKXa6ju9hAm-00b95Y0" }
                 });
 
             migrationBuilder.InsertData(
@@ -143,24 +185,59 @@ namespace CodeLab.Infrastructure.SqlServer.Migrations
                 values: new object[] { 1, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.CreateIndex(
+                name: "IX_OutboundMessage_Estado_FechaSiguienteReintento",
+                table: "OutboundMessage",
+                columns: new[] { "Estado", "FechaSiguienteReintento" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_IdUsuario",
                 table: "RefreshToken",
                 column: "IdUsuario");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Roles_Codigo",
+                table: "Roles",
+                column: "Codigo",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsuarioCanal_Canal_Destino",
+                table: "UsuarioCanal",
+                columns: new[] { "Canal", "Destino" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsuarioCanal_IdUsuario_Canal",
+                table: "UsuarioCanal",
+                columns: new[] { "IdUsuario", "Canal" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UsuarioRol_IdRol",
                 table: "UsuarioRol",
                 column: "IdRol");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Email",
+                table: "Usuarios",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "OutboundMessage");
+
+            migrationBuilder.DropTable(
                 name: "Parametros");
 
             migrationBuilder.DropTable(
                 name: "RefreshToken");
+
+            migrationBuilder.DropTable(
+                name: "UsuarioCanal");
 
             migrationBuilder.DropTable(
                 name: "UsuarioRol");

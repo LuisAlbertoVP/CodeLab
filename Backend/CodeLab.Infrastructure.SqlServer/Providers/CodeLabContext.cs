@@ -10,11 +10,13 @@ public sealed class CodeLabContext : DbContext
     public CodeLabContext(string? connectionString) => this._connectionString = connectionString;
     public CodeLabContext(DbContextOptions<CodeLabContext> options) : base(options) { }
 
+    public DbSet<OutboundMessage> OutboundMessage { get; set; }
     public DbSet<Parametros> Parametros { get; set; }
     public DbSet<RefreshToken> RefreshToken { get; set; }
     public DbSet<Roles> Roles { get; set; }
     public DbSet<Usuarios> Usuarios { get; set; }
     public DbSet<UsuarioRol> UsuarioRol { get; set; }
+    public DbSet<UsuarioCanal> UsuarioCanal { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -24,6 +26,8 @@ public sealed class CodeLabContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<OutboundMessage>().HasIndex(x => new { x.Estado, x.FechaSiguienteReintento });
+
         modelBuilder.Entity<Parametros>(entity =>
         {
             entity.HasKey(p => p.Nombre);
@@ -63,12 +67,24 @@ public sealed class CodeLabContext : DbContext
                     Nombre = "SerilogSettings:Ruta",
                     Valor = "/home/luisvp/Logs/CodeLab",
                     FechaCreacion = new DateTime(2026, 1, 1)
+                },
+                new Parametros {
+                    Nombre = "Telegram:Token",
+                    Valor = "8530866806:AAGBQUVsgVoJ8NnaLKXa6ju9hAm-00b95Y0",
+                    FechaCreacion = new DateTime(2026, 1, 1)
+                },
+                new Parametros {
+                    Nombre = "Telegram:LastOffset",
+                    Valor = "-1",
+                    FechaCreacion = new DateTime(2026, 1, 1)
                 }
             ]);
         });
 
         modelBuilder.Entity<Usuarios>(entity =>
         {
+            entity.HasIndex(x => x.Email).IsUnique();
+
             entity.
                 HasMany(u => u.RefreshTokens)
                 .WithOne(t => t.Usuario)
@@ -86,16 +102,21 @@ public sealed class CodeLabContext : DbContext
                 });
         });
 
-        modelBuilder.Entity<Roles>().HasData(
-            new Roles
-            {
-                Id = 1,
-                Codigo = "ADMIN",
-                Nombre = "Administrador",
-                UsuarioCreacion = 1,
-                FechaCreacion = new DateTime(2026, 1, 1)
-            }
-        );
+        modelBuilder.Entity<Roles>(entity =>
+        {
+            entity.HasIndex(x => x.Codigo).IsUnique();
+
+            entity.HasData(
+                new Roles
+                {
+                    Id = 1,
+                    Codigo = "ADMIN",
+                    Nombre = "Administrador",
+                    UsuarioCreacion = 1,
+                    FechaCreacion = new DateTime(2026, 1, 1)
+                }
+            );
+        });
 
 
         modelBuilder.Entity<UsuarioRol>(entity =>
@@ -117,6 +138,12 @@ public sealed class CodeLabContext : DbContext
                     IdRol = 1,
                     FechaAsignacion = new DateTime(2026, 1, 1)
                 });
+        });
+
+        modelBuilder.Entity<UsuarioCanal>(entity =>
+        {
+            entity.HasIndex(x => new { x.IdUsuario, x.Canal }).IsUnique();
+            entity.HasIndex(x => new { x.Canal, x.Destino }).IsUnique();
         });
     }
 }

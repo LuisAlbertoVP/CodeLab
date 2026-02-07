@@ -7,12 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../CodeLab.Domain/CodeLab.Domain.csproj" />
+    <PackageReference Include="Telegram.Bot" Version="22.8.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Telegram/" />
-    <Folder Include="Telegram/Interfaces/" />
+    <ProjectReference Include="../CodeLab.Application.Contracts/CodeLab.Application.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services/" />
   </ItemGroup>
 
 </Project>

@@ -1,25 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-CodeLab.Worker.TelegramListener-52402c59-a862-4d39-9091-5ccc47c95072</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.17" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="../CodeLab.Application/CodeLab.Application.csproj" />
-    <ProjectReference Include="../CodeLab.Infrastructure.Excel/CodeLab.Infrastructure.Excel.csproj" />
-    <ProjectReference Include="../CodeLab.Infrastructure.Jwt/CodeLab.Infrastructure.Jwt.csproj" />
+    <ProjectReference Include="../CodeLab.Infrastructure.Fallback/CodeLab.Infrastructure.Fallback.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.Logging/CodeLab.Infrastructure.Logging.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.Providers/CodeLab.Infrastructure.Providers.csproj" />
-    <ProjectReference Include="../CodeLab.Infrastructure.RabbitMq/CodeLab.Infrastructure.RabbitMq.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.SqlServer/CodeLab.Infrastructure.SqlServer.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.Telegram/CodeLab.Infrastructure.Telegram.csproj" />
   </ItemGroup>
-
 </Project>
