@@ -29,7 +29,7 @@ public class Usuarios : BaseEntity
 
         IntentosFallidos = 0;
         UltimoAcceso = DateTime.UtcNow;
-        //AddDomainEvent(new UsuarioAutenticadoEvent(this));
+        AddDomainEvent(new UsuarioAutenticadoEvent(this));
     }
 
     private bool PuedeAutenticarse() =>

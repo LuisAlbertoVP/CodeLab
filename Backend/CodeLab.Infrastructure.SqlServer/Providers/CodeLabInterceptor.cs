@@ -13,21 +13,21 @@ public class CodeLabInterceptor(IDomainEventDispatcher domainEventDispatcher) : 
     {
         var context = eventData.Context!;
         
-        var entities = context.ChangeTracker
-            .Entries<BaseEntity>()
-            .Select(e => e.Entity)
-            .Where(e => e.DomainEvents.Any())
-            .ToList();
-
-        foreach (var entity in entities)
+        var domainEvents = new List<IDomainEvent>();
+        foreach (var entry in context.ChangeTracker.Entries<BaseEntity>())
         {
-            var domainEvents = entity.DomainEvents.ToList();
+            var entity = entry.Entity;
+
+            if (entity.DomainEvents.Count == 0)
+                continue;
+
+            domainEvents.AddRange(entity.DomainEvents);
             entity.ClearDomainEvents();
-            
-            foreach (var domainEvent in domainEvents)
-            {
-                await domainEventDispatcher.DispatchAsync(domainEvent, ct);
-            }
+        }
+
+        if (domainEvents.Any())
+        {
+            await domainEventDispatcher.DispatchAsync(domainEvents, ct);
         }
 
         return result;
