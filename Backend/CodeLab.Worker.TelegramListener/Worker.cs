@@ -1,27 +1,14 @@
-using System.Collections.Concurrent;
 using CodeLab.Application.Contracts.Providers.Interfaces;
+using CodeLab.Application.Contracts.Telegram.Interfaces;
 using Telegram.Bot;
 
 namespace CodeLab.Worker.TelegramListener;
 
-public class Worker(IConfigTelegramProvider configTelegramProvider) : BackgroundService
-{
-    private enum EstadoUsuario
-    {
-        Ninguno,
-        EsperandoCorreo,
-        EsperandoCodigo
-    }
-
-    private class UsuarioSession
-    {
-        public EstadoUsuario Estado { get; set; } = EstadoUsuario.Ninguno;
-        public string Correo { get; set; }
-        public string CodigoEsperado { get; set; }
-    }
-
-    private readonly ConcurrentDictionary<long, UsuarioSession> _sessions = new();
-    
+public class Worker(
+    IConfigTelegramProvider configTelegramProvider,
+    IServiceScopeFactory serviceScopeFactory
+) : BackgroundService
+{    
     protected override async Task ExecuteAsync(CancellationToken ct)
     {
         var bot = new TelegramBotClient(configTelegramProvider.Token, cancellationToken: ct);
@@ -33,43 +20,20 @@ public class Worker(IConfigTelegramProvider configTelegramProvider) : Background
             foreach (var update in updates)
             {
                 offset = update.Id + 1;
-                
-                var chatId = update.Message.Chat.Id;
-                var texto = update.Message.Text ?? string.Empty;
-
-                Console.WriteLine(chatId);
-                Console.WriteLine(texto);
-
-                var session = _sessions.GetOrAdd(chatId, new UsuarioSession());
-
                 try
                 {
-                    switch (session.Estado)
-                    {
-                        case EstadoUsuario.Ninguno:
-                            await bot.SendMessage(chatId, "Por favor ingresa tu correo electrónico:", cancellationToken: ct);
-                            session.Estado = EstadoUsuario.EsperandoCorreo;
-                            break;
+                    using var scope = serviceScopeFactory.CreateScope();
 
-                        case EstadoUsuario.EsperandoCorreo:
-                            session.Correo = texto;
-                            session.CodigoEsperado = "test";
-                            await bot.SendMessage(chatId, "Se ha enviado a tu correo electrónico un código, por favor escríbelo:", cancellationToken: ct);
-                            session.Estado = EstadoUsuario.EsperandoCodigo;
-                            break;
+                    var offsetService = scope.ServiceProvider.GetRequiredService<ITelegramOffsetService>();
+                    await offsetService.SaveOffsetAsync(offset.Value, ct);
 
-                        case EstadoUsuario.EsperandoCodigo:
-                            if (texto == session.CodigoEsperado)
-                            {
-                                await bot.SendMessage(chatId, "Código correcto, ¡bienvenido a CodeLab!", cancellationToken: ct);
-                                _sessions.TryRemove(chatId, out _);
-                            }
-                            else
-                            {
-                                await bot.SendMessage(chatId, "Código incorrecto, intenta de nuevo:", cancellationToken: ct);
-                            }
-                            break;
-                    }
+                    var handlerService = scope.ServiceProvider.GetRequiredService<ITelegramHandlerService>();
+
+                    var chatId = update.Message.Chat.Id;
+                    var text = update.Message.Text?.Trim() ?? string.Empty;
+
+                    var response = await handlerService.HandleMessageAsync(chatId, text);
+                    await bot.SendMessage(chatId, response.Mensaje, cancellationToken: ct);
                 }
                 catch (Exception ex)
                 {

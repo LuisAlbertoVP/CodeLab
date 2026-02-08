@@ -2,5 +2,5 @@ namespace CodeLab.Domain.Interfaces;
 
 public interface IUnitOfWork
 {
-    Task<int> SaveChangesAsync(CancellationToken ct);
+    Task<int> SaveChangesAsync(CancellationToken ct = default);
 }

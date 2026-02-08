@@ -14,7 +14,7 @@
     <Folder Include="Http/" />
     <Folder Include="Http/Interfaces/" />
     <Folder Include="Microsoft/Auth/DTOs/" />
-    <Folder Include="Telegram/" />
+    <Folder Include="Telegram/Enums/" />
     <Folder Include="Telegram/Interfaces/" />
   </ItemGroup>
 

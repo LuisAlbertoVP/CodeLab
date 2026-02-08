@@ -5,6 +5,7 @@ using CodeLab.Application.Contracts.Logging.Interfaces;
 using CodeLab.Application.Contracts.Providers.Interfaces;
 using CodeLab.Application.Contracts.Telegram.Interfaces;
 using CodeLab.Application.Shared.Extensions;
+using CodeLab.Domain.Entities;
 using CodeLab.Domain.Interfaces;
 using CodeLab.Infrastructure.Jwt.Services;
 using CodeLab.Infrastructure.Logging.Extensions;
@@ -45,6 +46,7 @@ try
 
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+    builder.Services.AddScoped<IRepository<UsuarioCanal>, Repository<UsuarioCanal>>();
 
     builder.Services.AddApplicationServices();
 

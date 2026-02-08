@@ -6,9 +6,9 @@ namespace CodeLab.Infrastructure.Telegram.Services;
 
 public class TelegramService(IConfigTelegramProvider configTelegramProvider) : ITelegramService
 {
-    public async Task EnviarMensaje(string mensaje, CancellationToken ct)
+    public async Task EnviarMensaje(long chatId, string mensaje, CancellationToken ct)
     {
         var bot = new TelegramBotClient(configTelegramProvider.Token, cancellationToken: ct);
-        await bot.SendMessage("7771084803", mensaje, cancellationToken: ct);
+        await bot.SendMessage(chatId, mensaje, cancellationToken: ct);
     }
 }

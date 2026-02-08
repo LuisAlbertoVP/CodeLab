@@ -4,6 +4,7 @@ using CodeLab.Application.Contracts.Logging.Interfaces;
 using CodeLab.Application.Contracts.Providers.Interfaces;
 using CodeLab.Application.Contracts.Telegram.Interfaces;
 using CodeLab.Application.Shared.Extensions;
+using CodeLab.Domain.Entities;
 using CodeLab.Domain.Interfaces;
 using CodeLab.Infrastructure.Fallback;
 using CodeLab.Infrastructure.Logging.Extensions;
@@ -38,6 +39,13 @@ builder.Services.AddSingleton<ITelegramService, TelegramService>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IRepository<Parametros>, Repository<Parametros>>();
+builder.Services.AddScoped<IRepository<Usuarios>, Repository<Usuarios>>();
+builder.Services.AddScoped<IRepository<UsuarioCanal>, Repository<UsuarioCanal>>();
+
+builder.Services.AddSingleton<ITelegramUsuarioSesionService, TelegramUsuarioSesionService>();
+builder.Services.AddScoped<ITelegramOffsetService, TelegramOffsetService>();
+builder.Services.AddScoped<ITelegramHandlerService, TelegramHandlerService>();
 
 builder.Services.AddScoped<IJwtService, JwtFallbackService>();
 
