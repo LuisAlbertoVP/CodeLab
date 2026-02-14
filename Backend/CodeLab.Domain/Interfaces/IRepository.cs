@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace CodeLab.Application.Contracts.Database.Interfaces;
+namespace CodeLab.Domain.Interfaces;
 
 public interface IRepository<T> where T : class
 {

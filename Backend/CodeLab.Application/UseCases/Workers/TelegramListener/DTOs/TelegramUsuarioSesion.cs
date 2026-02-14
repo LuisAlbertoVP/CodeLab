@@ -1,6 +1,6 @@
-using CodeLab.Application.Contracts.Telegram.Enums;
+using CodeLab.Application.UseCases.Workers.TelegramListener.Enums;
 
-namespace CodeLab.Application.Contracts.Telegram.DTOs;
+namespace CodeLab.Application.UseCases.Workers.TelegramListener.DTOs;
 
 public class TelegramUsuarioSesion
 {

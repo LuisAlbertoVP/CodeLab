@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../CodeLab.Application/CodeLab.Application.csproj" />
+    <ProjectReference Include="../CodeLab.Infrastructure.Caching/CodeLab.Infrastructure.Caching.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.Fallback/CodeLab.Infrastructure.Fallback.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.Logging/CodeLab.Infrastructure.Logging.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.Providers/CodeLab.Infrastructure.Providers.csproj" />

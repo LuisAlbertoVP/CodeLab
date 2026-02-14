@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using CodeLab.Application.Contracts.Database.Interfaces;
+using CodeLab.Domain.Interfaces;
 using CodeLab.Infrastructure.SqlServer.Providers;
 using Microsoft.EntityFrameworkCore;
 

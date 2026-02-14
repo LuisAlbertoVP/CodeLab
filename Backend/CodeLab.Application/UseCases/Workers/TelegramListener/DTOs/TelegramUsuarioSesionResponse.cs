@@ -1,6 +1,6 @@
 using System;
 
-namespace CodeLab.Application.Contracts.Telegram.DTOs;
+namespace CodeLab.Application.UseCases.Workers.TelegramListener.DTOs;
 
 public class TelegramUsuarioSesionResponse
 {

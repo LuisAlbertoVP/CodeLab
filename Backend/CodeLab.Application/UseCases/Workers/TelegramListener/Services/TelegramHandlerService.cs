@@ -1,23 +1,27 @@
-using CodeLab.Application.Contracts.Database.Interfaces;
-using CodeLab.Application.Contracts.Telegram.DTOs;
-using CodeLab.Application.Contracts.Telegram.Enums;
-using CodeLab.Application.Contracts.Telegram.Interfaces;
+using CodeLab.Application.Contracts.Caching.Interfaces;
+using CodeLab.Application.UseCases.Workers.TelegramListener.DTOs;
+using CodeLab.Application.UseCases.Workers.TelegramListener.Enums;
+using CodeLab.Application.UseCases.Workers.TelegramListener.Interfaces;
 using CodeLab.Domain.Entities;
 using CodeLab.Domain.Enums;
 using CodeLab.Domain.Interfaces;
 
-namespace CodeLab.Infrastructure.Telegram.Services;
+namespace CodeLab.Application.UseCases.Workers.TelegramListener.Services;
 
 public class TelegramHandlerService(
-    ITelegramUsuarioSesionService telegramUsuarioSesionService,
+    ICacheService cacheService,
     IRepository<Usuarios> usuarioRepository,
-    IRepository<UsuarioCanal> usuarioCanalRepository,
-    IUnitOfWork unitOfWork
+    IRepository<UsuarioCanal> usuarioCanalRepository
 ) : ITelegramHandlerService
 {
     public async Task<TelegramUsuarioSesionResponse> HandleMessageAsync(long chatId, string message)
     {
-        var session = telegramUsuarioSesionService.GetOrCreate(chatId);
+        if (!cacheService.TryGetValue(chatId.ToString(), out TelegramUsuarioSesion session))
+        {
+            session = new TelegramUsuarioSesion();
+            cacheService.Set(chatId.ToString(), session, TimeSpan.FromMinutes(15));
+        }
+
         switch (session.Estado)
         {
             case TelegramEstadoUsuario.Ninguno:
@@ -33,7 +37,7 @@ public class TelegramHandlerService(
                 }
                 if (await usuarioCanalRepository.AnyAsync(uc => uc.IdUsuario == usuario.Id && uc.Canal == OutboundChannel.Telegram))
                 {
-                    telegramUsuarioSesionService.Reset(chatId);
+                    cacheService.Remove(chatId.ToString());
                     return new("Este correo ya está registrado con Telegram.");
                 }
                 session.Estado = TelegramEstadoUsuario.EsperandoCodigo;
@@ -55,8 +59,7 @@ public class TelegramHandlerService(
                         FechaModificacion = DateTime.UtcNow
                     });
 
-                    await unitOfWork.SaveChangesAsync();
-                    telegramUsuarioSesionService.Reset(chatId);
+                    cacheService.Remove(chatId.ToString());
 
                     return new("Código correcto, ¡bienvenido a CodeLab!", true);
                 }
@@ -64,7 +67,7 @@ public class TelegramHandlerService(
                 session.Intentos++;
                 if (session.Intentos >= 3)
                 {
-                    telegramUsuarioSesionService.Reset(chatId);
+                    cacheService.Remove(chatId.ToString());
                     return new("Has excedido el número de intentos.", true);
                 }
 

@@ -1,22 +1,12 @@
+using System.Reflection;
 using CodeLab.Api.Web.Middleware;
-using CodeLab.Application.Contracts.Database.Interfaces;
-using CodeLab.Application.Contracts.Jwt.Interfaces;
-using CodeLab.Application.Contracts.Logging.Interfaces;
 using CodeLab.Application.Contracts.Providers.Interfaces;
-using CodeLab.Application.Contracts.Telegram.Interfaces;
 using CodeLab.Application.Shared.Extensions;
-using CodeLab.Domain.Entities;
-using CodeLab.Domain.Interfaces;
-using CodeLab.Infrastructure.Jwt.Services;
 using CodeLab.Infrastructure.Logging.Extensions;
-using CodeLab.Infrastructure.Logging.Services;
-using CodeLab.Infrastructure.Providers.Configurations;
-using CodeLab.Infrastructure.RabbitMq.Services;
 using CodeLab.Infrastructure.SqlServer.Extensions;
 using CodeLab.Infrastructure.SqlServer.Providers;
-using CodeLab.Infrastructure.SqlServer.Repositories;
-using CodeLab.Infrastructure.Telegram.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyModel;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -33,24 +23,11 @@ try
             .AddInterceptors(interceptor);
     });
 
-    builder.Services.AddSingleton<IConfigMessagesProvider, ConfigMessagesProvider>();
-
-    builder.Services.AddSingleton<IConfigLogProvider, ConfigLogProvider>();
-    builder.Services.AddSingleton<ICodeLabLogger, CodeLabLogger>();
-
-    builder.Services.AddSingleton<IConfigJwtProvider, ConfigJwtProvider>();
-    builder.Services.AddSingleton<IJwtService, JwtService>();
-
-    builder.Services.AddSingleton<IConfigTelegramProvider, ConfigTelegramProvider>();
-    builder.Services.AddSingleton<ITelegramService, TelegramService>();
-
-    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-    builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-    builder.Services.AddScoped<IRepository<UsuarioCanal>, Repository<UsuarioCanal>>();
-
-    builder.Services.AddApplicationServices();
-
-    //builder.Services.AddSingleton<IMailPublisherService, MailPublisherService>();
+    var assemblies = DependencyContext.Default.RuntimeLibraries
+        .Where(lib => lib.Name.StartsWith("CodeLab"))
+        .Select(lib => Assembly.Load(new AssemblyName(lib.Name)))
+        .ToArray();
+    builder.Services.AddDiscoveryServices(assemblies);
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(c =>
@@ -93,16 +70,14 @@ try
 
     builder.Host.UseSerilog((context, services, cfg) =>
     {
-        var configLogProvider = services.GetRequiredService<IConfigLogProvider>();
+        using var scope = services.CreateScope();
+        var configLogProvider = scope.ServiceProvider.GetRequiredService<IConfigLogProvider>();
         cfg.ConfigureLogger(configLogProvider);
     });
 
     Console.WriteLine("Configuración de servicios completada.");
 
     var app = builder.Build();
-
-    //var mailService = app.Services.GetRequiredService<IMailPublisherService>();
-    //await mailService.InitializeAsync();
 
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 

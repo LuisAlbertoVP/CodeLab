@@ -4,11 +4,9 @@ using CodeLab.Application.Shared.Exceptions;
 
 namespace CodeLab.Api.Web.Middleware;
 
-public class ExceptionHandlingMiddleware(
-    RequestDelegate next,
-    ICodeLabLogger logger)
+public class ExceptionHandlingMiddleware(RequestDelegate next)
 {
-    public async Task Invoke(HttpContext context)
+    public async Task Invoke(HttpContext context, ICodeLabLogger logger)
     {
         try
         {

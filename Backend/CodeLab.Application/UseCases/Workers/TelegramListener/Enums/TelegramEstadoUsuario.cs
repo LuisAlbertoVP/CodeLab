@@ -1,4 +1,4 @@
-namespace CodeLab.Application.Contracts.Telegram.Enums;
+namespace CodeLab.Application.UseCases.Workers.TelegramListener.Enums;
 
 public enum TelegramEstadoUsuario
 {

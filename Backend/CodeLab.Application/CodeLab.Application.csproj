@@ -15,4 +15,10 @@
     <ProjectReference Include="../CodeLab.Application.Contracts/CodeLab.Application.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases/Workers/TelegramListener/Commands/" />
+    <Folder Include="UseCases/Workers/TelegramListener/Commands/GuardarOffset/" />
+    <Folder Include="UseCases/Workers/TelegramListener/Commands/VincularTelegram/" />
+  </ItemGroup>
+
 </Project>

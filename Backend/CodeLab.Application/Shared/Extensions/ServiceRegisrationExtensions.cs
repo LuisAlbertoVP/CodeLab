@@ -1,7 +1,6 @@
-using CodeLab.Application.Shared.Behavior;
+using System.Reflection;
+using CodeLab.Application.Contracts.Fallback.Attributes;
 using CodeLab.Application.Shared.Common;
-using CodeLab.Application.UseCases.Identity.Interfaces;
-using CodeLab.Application.UseCases.Identity.Services;
 using CodeLab.Domain.Interfaces;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,41 +9,124 @@ namespace CodeLab.Application.Shared.Extensions;
 
 public static class ServiceRegisrationExtensions
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    private sealed record ServiceTypes(Type Interface, Type Implementation);
+
+    private static IEnumerable<ServiceTypes> GetServiceTypesFromAssembly(Assembly assembly, Type genericInterfaceType)
+    {
+        return assembly.GetTypes()
+            .Where(type => !type.IsAbstract && !type.IsInterface)
+            .SelectMany(type =>
+                type.GetInterfaces()
+                    .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericInterfaceType)
+                    .Select(i => new ServiceTypes(i, type)));
+    }
+
+    private static void AddScopedServices(this IServiceCollection services, Assembly assembly, Type genericInterfaceType)
+    {
+        foreach (var service in GetServiceTypesFromAssembly(assembly, genericInterfaceType))
+        {
+            services.AddScoped(service.Interface, service.Implementation);
+        }
+    }
+
+    private static void AddValidationRegister(this IServiceCollection services)
     {
         var assembly = typeof(ServiceRegisrationExtensions).Assembly;
+        services.AddScopedServices(assembly, typeof(IValidator<>));
+    }
 
-        var types = assembly.GetTypes()
-            .Where(t => t.IsClass && !t.IsAbstract);
+    public static IServiceCollection AddDiscoveryServices(this IServiceCollection services, Assembly[] assemblies)
+    {
+        services.AddValidationRegister();
 
-        var serviceTypes = new[]
+        var excluded = new[]
         {
-            typeof(IRequestHandler<,>),
-            typeof(INotificationHandler<>),
-            typeof(IValidator<>)
+            typeof(IDomainEvent),
+            typeof(IRequest<>),
+            typeof(ICommand<>),
+            typeof(INotification)
         };
 
-        var registrations = types
-            .SelectMany(type => type.GetInterfaces()
-                .Where(i => i.IsGenericType && serviceTypes.Contains(i.GetGenericTypeDefinition()))
-                .Select(i => new { Service = i, Implementation = type }));
+        var allTypes = assemblies.SelectMany(a => a.GetTypes()).ToList();
 
-        foreach (var reg in registrations)
+        var interfaces = allTypes
+            .Where(t => t.IsInterface && !excluded.Contains(t))
+            .ToList();
+
+        var classes = allTypes
+            .Where(t => t.IsClass && !t.IsAbstract)
+            .ToList();
+
+        foreach (var iface in interfaces)
         {
-            services.AddScoped(reg.Service, reg.Implementation);
+            var realImplementations = new List<Type>();
+
+            foreach (var impl in classes)
+            {
+                if (impl.GetCustomAttribute<FallbackAttribute>() != null)
+                    continue;
+
+                if (ImplementsInterface(impl, iface))
+                    realImplementations.Add(impl);
+            }
+
+            foreach (var impl in realImplementations)
+            {
+                Register(services, iface, impl);
+            }
+
+            if (realImplementations.Count == 0)
+            {
+                var fallback = classes.FirstOrDefault(c =>
+                    c.GetCustomAttribute<FallbackAttribute>() != null &&
+                    ImplementsInterface(c, iface));
+
+                if (fallback != null && !services.Any(sd => sd.ServiceType == iface))
+                {
+                    Register(services, iface, fallback);
+                }
+            }
         }
 
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ExceptionBehavior<,>));
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(PerformanceMonitoringBehavior<,>));
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
-
-        services.AddScoped<IMediator, Mediator>();
-        services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<ITokenService, TokenService>();
-
         return services;
+    }
+
+    private static bool ImplementsInterface(Type implementation, Type iface)
+    {
+        if (!iface.IsGenericTypeDefinition)
+        {
+            return iface.IsAssignableFrom(implementation);
+        }
+
+        return implementation
+            .GetInterfaces()
+            .Any(i =>
+                i.IsGenericType &&
+                i.GetGenericTypeDefinition() == iface);
+    }
+
+    private static void Register(IServiceCollection services, Type iface, Type impl)
+    {
+        if (iface.IsGenericTypeDefinition)
+        {
+            if (impl.IsGenericTypeDefinition)
+            {
+                services.AddScoped(iface, impl);
+            }
+            else
+            {
+                var closedInterface = impl
+                    .GetInterfaces()
+                    .First(i =>
+                        i.IsGenericType &&
+                        i.GetGenericTypeDefinition() == iface);
+
+                services.AddScoped(closedInterface, impl);
+            }
+        }
+        else
+        {
+            services.AddScoped(iface, impl);
+        }
     }
 }

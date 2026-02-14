@@ -1,8 +1,8 @@
-using CodeLab.Application.Contracts.Database.Interfaces;
 using CodeLab.Application.Contracts.Telegram.Interfaces;
 using CodeLab.Application.Shared.Common;
 using CodeLab.Domain.Entities;
 using CodeLab.Domain.Events;
+using CodeLab.Domain.Interfaces;
 
 namespace CodeLab.Application.UseCases.Identity.Events.UsuarioAutenticado;
 
