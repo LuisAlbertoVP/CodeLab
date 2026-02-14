@@ -18,6 +18,7 @@
     <ProjectReference Include="../CodeLab.Infrastructure.Logging/CodeLab.Infrastructure.Logging.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.Providers/CodeLab.Infrastructure.Providers.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.RabbitMq/CodeLab.Infrastructure.RabbitMq.csproj" />
+    <ProjectReference Include="../CodeLab.Infrastructure.Redis/CodeLab.Infrastructure.Redis.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.SqlServer/CodeLab.Infrastructure.SqlServer.csproj" />
     <ProjectReference Include="../CodeLab.Infrastructure.Telegram/CodeLab.Infrastructure.Telegram.csproj" />
   </ItemGroup>

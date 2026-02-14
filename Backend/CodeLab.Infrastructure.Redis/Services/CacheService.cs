@@ -2,7 +2,7 @@ using System.Text.Json;
 using CodeLab.Application.Contracts.Caching.Interfaces;
 using StackExchange.Redis;
 
-namespace CodeLab.Infrastructure.Caching.Services;
+namespace CodeLab.Infrastructure.Redis.Services;
 
 public class CacheService(IConnectionMultiplexer redis) : ICacheService
 {
