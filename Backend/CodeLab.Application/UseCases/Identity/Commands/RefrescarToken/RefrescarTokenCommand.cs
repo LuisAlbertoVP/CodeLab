@@ -3,4 +3,4 @@ using CodeLab.Application.Shared.Results;
 
 namespace CodeLab.Application.UseCases.Identity.Commands.RefrescarToken;
 
-public record RefrescarTokenCommand(string RefreshToken) : IRequest<CodeLabResultado<LoginResultDTO>>;
+public record RefrescarTokenCommand(string RefreshToken) : ICommand<CodeLabResultado<LoginResultDTO>>;

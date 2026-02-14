@@ -1,4 +1,3 @@
-using CodeLab.Application.Contracts.Database.DTOs;
 using CodeLab.Domain.Entities;
 
 namespace CodeLab.Application.Contracts.Database.Interfaces;
@@ -6,8 +5,5 @@ namespace CodeLab.Application.Contracts.Database.Interfaces;
 public interface IAuthRepository
 {
     Task<Usuarios?> ObtenerUsuarioPorEmail(string email);
-
-    Task AddRefreshToken(RefreshToken refreshToken);
-    
-    Task<UsuarioAutenticadoDto> RefrescarToken(string token);
+    Task<RefreshToken?> ObtenerRefreshToken(string token);
 }
