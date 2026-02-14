@@ -8,6 +8,7 @@ using CodeLab.Worker.TelegramListener;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyModel;
 using Serilog;
+using StackExchange.Redis;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -20,7 +21,11 @@ builder.Services.AddDbContext<CodeLabContext>((serviceProvider, options) =>
         .AddInterceptors(interceptor);
 });
 
-builder.Services.AddMemoryCache();
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var configuration = "localhost:6379";
+    return ConnectionMultiplexer.Connect(configuration);
+});
 
 var assemblies = DependencyContext.Default.RuntimeLibraries
     .Where(lib => lib.Name.StartsWith("CodeLab"))

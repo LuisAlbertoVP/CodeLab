@@ -26,6 +26,7 @@ public class TelegramHandlerService(
         {
             case TelegramEstadoUsuario.Ninguno:
                 session.Estado = TelegramEstadoUsuario.EsperandoCorreo;
+                cacheService.Set(chatId.ToString(), session, TimeSpan.FromMinutes(15));
                 return new("Por favor ingresa tu correo electrónico:");
 
             case TelegramEstadoUsuario.EsperandoCorreo:
@@ -44,6 +45,7 @@ public class TelegramHandlerService(
                 session.Correo = message;
                 session.IdUsuario = usuario.Id;
                 session.CodigoEsperado = "test";
+                cacheService.Set(chatId.ToString(), session, TimeSpan.FromMinutes(15));
                 return new("Por favor ingresa el código de verificación enviado a tu correo:");
             }
 
